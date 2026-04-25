@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprint Time Calculator | Estimate 10yd, 30yd, 40yd, 100m &amp; 200m</title>
+<meta name="description" content="Free sprint time calculator. Estimate 10yd, 20yd, 30yd, 40yd, 60yd, 60m, 100m and 200m conversions, average speed, top speed, and general performance tiers. Educational, transparent, and mobile-friendly.">
+<link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/">
+<link rel="stylesheet" href="css/styles.css">
+<meta name="theme-color" content="#0b1220">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sprint Time Calculator | Estimate 10yd, 30yd, 40yd, 100m & 200m">
+<meta property="og:description" content="Estimate sprint conversions, speed, and general performance tiers. Educational tool, not an official testing platform.">
+<meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Sprint Performance Calculator",
+  "applicationCategory": "SportsApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "url": "https://mwcordell3.github.io/SprintConvert/",
+  "description": "Estimate sprint conversions, speed, and general performance tiers using distance, time, timing method, start type, and optional split data."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://mwcordell3.github.io/SprintConvert/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "How accurate is the sprint time calculator?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It returns estimates, not official marks. Sprint performance is not linear, and timing method, start type, surface, and conditions all change real results. The confidence rating tells you how strong the estimate is for your inputs." }},
+    { "@type": "Question", "name": "What is the difference between hand time and FAT?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Hand-timed runs are typically 0.20–0.30 seconds faster than fully automatic timing because of human reaction delay starting the watch. The calculator can apply a +0.24-second adjustment to estimate a FAT equivalent for track-style hand times." }},
+    { "@type": "Question", "name": "Why does start type matter?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Block, 3-point, and standing starts all begin from rest. Rolling and flying starts skip the acceleration phase, so a flying 40 will look much faster than the same effort from a standing or 3-point start." }},
+    { "@type": "Question", "name": "Are the benchmarks an exact percentile?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Benchmarks are general performance ranges drawn from cited sources. They are useful as broad guidance but should not be treated as percentile rankings." }}
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span>Sprint Performance Calculator</a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html" aria-current="page">Calculator</a></li>
+        <li><a href="40-yard-dash-calculator.html">40yd</a></li>
+        <li><a href="track-100m-calculator.html">100m</a></li>
+        <li><a href="methodology.html">Methodology</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="container">
+    <h1>Sprint Time Calculator for 10yd, 30yd, 40yd, 60m, 100m, and 200m</h1>
+    <p class="lead">Estimate sprint conversions, speed, and general performance tiers using distance, time, timing method, start type, and optional split data.</p>
+    <div class="badge-row" aria-hidden="true">
+      <span class="badge">No account</span>
+      <span class="badge">No email</span>
+      <span class="badge">Runs in your browser</span>
+      <span class="badge">Mobile-friendly</span>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <h2>Sprint calculator</h2>
+  <p class="muted">Fill in distance, time, timing method, and start type. Optional fields improve the estimate.</p>
+
+  <div id="sc-errors" role="alert" aria-live="assertive"></div>
+
+  <form id="sc-form" novalidate aria-describedby="sc-form-help">
+    <p id="sc-form-help" class="muted small">All fields with * are required. Hover or focus a label for hints.</p>
+
+    <fieldset>
+      <legend>Required inputs</legend>
+      <div class="form-grid">
+        <label class="field">
+          <span class="label-text">Distance *</span>
+          <select name="distance" required aria-describedby="help-distance">
+            <option value="">Choose…</option>
+            <option value="10y">10 yards</option>
+            <option value="20y">20 yards</option>
+            <option value="30y">30 yards</option>
+            <option value="40y" selected>40 yards</option>
+            <option value="60y">60 yards</option>
+            <option value="60m">60 meters</option>
+            <option value="100m">100 meters</option>
+            <option value="200m">200 meters</option>
+          </select>
+          <span id="help-distance" class="help">Pick the distance you actually ran.</span>
+        </label>
+
+        <label class="field">
+          <span class="label-text">Time (seconds) *</span>
+          <input name="time" type="number" inputmode="decimal" step="0.01" min="0.01" required
+                 placeholder="e.g. 4.55" aria-describedby="help-time">
+          <span id="help-time" class="help">Decimals OK. Reject zero or negative values.</span>
+        </label>
+
+        <label class="field">
+          <span class="label-text">Timing method *</span>
+          <select name="timing" required aria-describedby="help-timing">
+            <option value="fat" selected>Fully automatic timing (FAT)</option>
+            <option value="laser">Laser timed</option>
+            <option value="hand">Hand timed</option>
+            <option value="phone">Phone video estimate</option>
+          </select>
+          <span id="help-timing" class="help">Hand and phone times are usually faster than FAT.</span>
+        </label>
+
+        <label class="field">
+          <span class="label-text">Start type *</span>
+          <select name="startType" required aria-describedby="help-start">
+            <option value="3point" selected>3-point start</option>
+            <option value="block">Block start</option>
+            <option value="standing">Standing start</option>
+            <option value="rolling">Rolling start</option>
+            <option value="flying">Flying start</option>
+          </select>
+          <span id="help-start" class="help">Block / 3-point / standing all start from rest. Rolling and flying are already moving.</span>
+        </label>
+
+        <div class="field full">
+          <div class="checkbox-row">
+            <input id="hand-adj" name="applyHandTimeAdjustment" type="checkbox">
+            <label for="hand-adj">
+              Apply estimated hand-time adjustment (+0.24s)
+              <div class="help">Hand times are usually faster than fully automatic times. Conversions are estimates and should not be treated as official marks.</div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Optional: top speed and splits</legend>
+      <div class="form-grid">
+        <label class="field">
+          <span class="label-text">Top speed</span>
+          <input name="topSpeed" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 21.5"
+                 aria-describedby="help-top">
+          <span id="help-top" class="help">Optional. Improves the estimate if you have a measured peak speed.</span>
+        </label>
+        <label class="field">
+          <span class="label-text">Top speed unit</span>
+          <select name="topSpeedUnit">
+            <option value="mph" selected>mph</option>
+            <option value="ms">m/s</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">10-yard split (s)</span>
+          <input name="split10y" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 1.65">
+          <span class="help">First 10 yards from the start.</span>
+        </label>
+        <label class="field">
+          <span class="label-text">20-yard split (s)</span>
+          <input name="split20y" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 2.65">
+        </label>
+        <label class="field">
+          <span class="label-text">Flying 10m (s)</span>
+          <input name="flying10m" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 0.94">
+          <span class="help">A 10m segment after a running build-up. Often used to measure max velocity.</span>
+        </label>
+        <label class="field">
+          <span class="label-text">Flying 20m (s)</span>
+          <input name="flying20m" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 1.85">
+        </label>
+        <label class="field">
+          <span class="label-text">30m block time (s)</span>
+          <input name="block30m" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 3.95">
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Optional: athlete profile (broad ranges only)</legend>
+      <p class="muted small">We do not collect names, schools, exact age, exact birthdays, location, or contact information.</p>
+      <div class="form-grid">
+        <label class="field">
+          <span class="label-text">Age range</span>
+          <select name="ageGroup">
+            <option value="">Not specified</option>
+            <option value="13-14">13–14</option>
+            <option value="15-16">15–16</option>
+            <option value="17-18">17–18</option>
+            <option value="college-adult">College / adult</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Sex / category</span>
+          <select name="sex">
+            <option value="not specified">Not specified</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Sport</span>
+          <select name="sport">
+            <option value="general athlete">General athlete</option>
+            <option value="football">Football</option>
+            <option value="baseball">Baseball</option>
+            <option value="soccer">Soccer</option>
+            <option value="track">Track</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Position</span>
+          <select name="position">
+            <option value="all">All / not specified</option>
+            <option value="skill">Skill</option>
+            <option value="big-skill">Big skill</option>
+            <option value="lineman">Lineman</option>
+            <option value="outfield">Outfield</option>
+            <option value="infield">Infield</option>
+            <option value="forward">Forward / wing</option>
+            <option value="midfielder">Midfielder</option>
+            <option value="defender">Defender</option>
+          </select>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="btn-row">
+      <button type="submit" class="btn btn-primary">Calculate</button>
+      <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+  </form>
+</section>
+
+<section class="container results-anchor" aria-label="Results">
+  <h2>Results</h2>
+  <div id="sc-results"></div>
+</section>
+
+<section class="container">
+  <h2>How the calculator works</h2>
+  <div class="card">
+    <p>The calculator normalizes your input to a fully automatic timing (FAT), static-start baseline using small adjustments for timing method (about +0.24 seconds for track-style hand times) and start type. It then scales to other distances using reference proportions for a competitive male athlete.</p>
+    <p>Sprint performance is <strong>not</strong> linear. Short sprints depend more on acceleration; longer sprints depend more on max velocity and speed endurance. Estimates are rounded and presented with a confidence rating so you can see how reliable they are for your inputs.</p>
+    <p><a href="methodology.html">Read the full methodology &rarr;</a></p>
+  </div>
+</section>
+
+<section class="container">
+  <h2>Why sprint conversions are not exact</h2>
+  <div class="card">
+    <ul>
+      <li>Sprinting is not linear — acceleration, top speed, and speed endurance each play different roles at different distances.</li>
+      <li>Hand-timed and phone-video runs typically read faster than FAT or laser systems.</li>
+      <li>Block, 3-point, and standing starts all begin from rest. Rolling and flying starts skip part or all of the acceleration phase.</li>
+      <li>Surface, footwear, wind, and weather change real-world results.</li>
+      <li>One time alone is a rough sample; splits and a measured top speed make estimates more reliable.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="container">
+  <h2>Sport-specific calculators</h2>
+  <div class="tile-grid">
+    <a class="tile" href="40-yard-dash-calculator.html"><h3>40-yard dash calculator</h3><p>Football-style 40 estimates with splits and benchmark tier.</p></a>
+    <a class="tile" href="30-yard-to-40-yard-converter.html"><h3>30 to 40 yard converter</h3><p>Convert a known 30-yard time to an estimated 40-yard time.</p></a>
+    <a class="tile" href="100m-to-40-yard-converter.html"><h3>100m to 40-yard converter</h3><p>Estimate a 40-yard from a 100-meter time.</p></a>
+    <a class="tile" href="sprint-speed-calculator.html"><h3>Sprint speed calculator</h3><p>Average and estimated top speed in mph, m/s, and km/h.</p></a>
+    <a class="tile" href="hand-time-to-fat-converter.html"><h3>Hand time to FAT converter</h3><p>Estimate a fully-automatic-time equivalent of a hand-timed run.</p></a>
+    <a class="tile" href="flying-10-flying-20-calculator.html"><h3>Flying 10 / Flying 20 calculator</h3><p>Estimate max velocity from a flying-segment time.</p></a>
+    <a class="tile" href="baseball-60-yard-dash-calculator.html"><h3>Baseball 60-yard dash</h3><p>60-yard estimate with general recruiting tiers.</p></a>
+    <a class="tile" href="soccer-30m-sprint-calculator.html"><h3>Soccer 30m sprint</h3><p>30-meter sprint estimate with general competitive tiers.</p></a>
+    <a class="tile" href="track-100m-calculator.html"><h3>Track 100m calculator</h3><p>Estimate a 100-meter time from another sprint distance.</p></a>
+  </div>
+</section>
+
+<section class="container faq">
+  <h2>FAQ</h2>
+  <details>
+    <summary>How accurate is the sprint time calculator?</summary>
+    <p>It returns estimates, not official marks. Sprint performance is not linear, and timing method, start type, surface, and conditions all change real results. The confidence rating tells you how strong the estimate is for your inputs.</p>
+  </details>
+  <details>
+    <summary>What is the difference between hand time and FAT?</summary>
+    <p>Hand-timed runs are typically 0.20–0.30 seconds faster than fully automatic timing because of human reaction delay starting the watch. The calculator can apply a +0.24-second adjustment to estimate a FAT equivalent for track-style hand times. For short combine-style tests, timing systems vary, so the adjustment is only an estimate.</p>
+  </details>
+  <details>
+    <summary>Why does start type matter?</summary>
+    <p>Block, 3-point, and standing starts all begin from rest. Rolling and flying starts skip the acceleration phase, so a flying 40 will look much faster than the same effort from a standing or 3-point start. Mixing start types reduces confidence in cross-distance comparisons.</p>
+  </details>
+  <details>
+    <summary>Are the benchmarks an exact percentile?</summary>
+    <p>No. Benchmarks are general performance ranges drawn from cited sources. They are useful as broad guidance but should not be treated as percentile rankings.</p>
+  </details>
+  <details>
+    <summary>Will this help with recruiting?</summary>
+    <p>This site does not predict, guarantee, or otherwise determine recruiting outcomes. It can give you a quick directional estimate to share with a coach or training partner. Talk to a qualified coach for individualized advice.</p>
+  </details>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Sprint Performance Calculator</h4>
+        <p class="small">Educational sprint estimation tools. Independent site. Not affiliated with any league, team, school, recruiting service, or timing company.</p>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="40-yard-dash-calculator.html">40-yard dash</a></li>
+          <li><a href="track-100m-calculator.html">Track 100m</a></li>
+          <li><a href="baseball-60-yard-dash-calculator.html">Baseball 60yd</a></li>
+          <li><a href="soccer-30m-sprint-calculator.html">Soccer 30m</a></li>
+          <li><a href="sprint-speed-calculator.html">Sprint speed</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="methodology.html">Methodology</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="accessibility.html">Accessibility</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal-line">© Sprint Performance Calculator. Estimates only. Not affiliated with NFL, NCAA, MLB, MLS, any team, school, or recruiting service.</p>
+  </div>
+</footer>
+
+<script src="data/benchmarks.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/benchmarks.js"></script>
+<script src="js/share.js"></script>
+<script>
+  window.SC.share.bootstrapCalculator({
+    defaults: { distance: "40y", timing: "fat", startType: "3point", topSpeedUnit: "mph", sport: "general athlete" }
+  });
+</script>
+</body>
+</html>

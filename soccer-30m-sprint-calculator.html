@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soccer 30m Sprint Calculator | Speed Test Estimate</title>
+<meta name="description" content="Estimate a soccer 30-meter sprint time, average speed, and a general competitive tier. Educational tool with cited benchmark range and confidence rating.">
+<link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/soccer-30m-sprint-calculator.html">
+<link rel="stylesheet" href="css/styles.css">
+<meta name="theme-color" content="#0b1220">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Soccer 30m Sprint Calculator | Speed Test Estimate">
+<meta property="og:description" content="Estimate a soccer 30-meter sprint time, average speed, and a general competitive tier. Educational tool with cited benchmark range and confidence rating.">
+<meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/soccer-30m-sprint-calculator.html">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Soccer 30m Sprint Calculator","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/soccer-30m-sprint-calculator.html","description":"Estimate a soccer 30-meter sprint time, average speed, and a general competitive tier. Educational tool with cited benchmark range and confidence rating."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"Soccer 30m Sprint Calculator","item":"https://mwcordell3.github.io/SprintConvert/soccer-30m-sprint-calculator.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"My team measures the 30y instead of the 30m. Will the calculator still work?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose 30 yards as the distance and the engine will still scale to other distances and use the soccer 30m benchmark for a directional comparison. The two distances differ by about 2.6 meters."}},{"@type":"Question","name":"Does this work for women's soccer testing?","acceptedAnswer":{"@type":"Answer","text":"The calculator runs the math for any input, but the benchmark dataset for soccer 30m is currently sourced from a male-player reference. We chose not to publish a women's-specific tier without a strong cited source. Your conversions and speeds are still shown."}},{"@type":"Question","name":"What is a competitive 30m soccer time?","acceptedAnswer":{"@type":"Answer","text":"Around 4.20 seconds is in the general 'competitive' range from our cited reference, with elite trained players running close to 3.70. These are broad ranges, not percentiles."}}]}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span>Sprint Performance Calculator</a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Calculator</a></li>
+        <li><a href="40-yard-dash-calculator.html">40yd</a></li>
+        <li><a href="track-100m-calculator.html">100m</a></li>
+        <li><a href="methodology.html">Methodology</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
+
+<section class="hero">
+  <div class="container">
+    <p><a href="index.html">← Back to all calculators</a></p>
+    <h1>Soccer 30m Sprint Calculator</h1>
+    <p class="lead">Estimate your soccer 30-meter sprint time, average speed, and a general competitive performance tier. Educational tool, not an official combine or scouting result.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="card">
+      <p>The 30-meter sprint is a standard soccer speed test used in academy programs and physical-testing protocols around the world. It captures acceleration plus the early portion of max velocity, which mirrors the typical sprint demands of a soccer match.</p>
+      <p>This calculator estimates your 30m time and converts it to other sprint distances, with a general competitive tier from a cited reference. The 30-meter benchmark uses adult / teen male trained-player data — adjust your interpretation if you fall outside that group.</p>
+    </div>
+</section>
+
+<section class="container">
+  <h2>Calculator</h2>
+  <div id="sc-errors" role="alert" aria-live="assertive"></div>
+  <form id="sc-form" novalidate aria-describedby="sc-form-help">
+    <p id="sc-form-help" class="muted small">All fields with * are required. Optional fields below improve the estimate.</p>
+
+    <fieldset>
+      <legend>Required inputs</legend>
+      <div class="form-grid">
+        <label class="field">
+          <span class="label-text">Distance *</span>
+          <select name="distance" required>
+            <option value="10y">10 yards</option>
+            <option value="20y">20 yards</option>
+            <option value="30y">30 yards</option>
+            <option value="30m" selected>30 meters</option>
+            <option value="40y">40 yards</option>
+            <option value="60y">60 yards</option>
+            <option value="60m">60 meters</option>
+            <option value="100m">100 meters</option>
+            <option value="200m">200 meters</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Time (seconds) *</span>
+          <input name="time" type="number" inputmode="decimal" step="0.01" min="0.01" required placeholder="e.g. 4.10">
+        </label>
+        <label class="field">
+          <span class="label-text">Timing method *</span>
+          <select name="timing" required>
+            <option value="fat" selected>Fully automatic timing (FAT)</option>
+            <option value="laser">Laser timed</option>
+            <option value="hand">Hand timed</option>
+            <option value="phone">Phone video estimate</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Start type *</span>
+          <select name="startType" required>
+            <option value="3point">3-point start</option>
+            <option value="block">Block start</option>
+            <option value="standing" selected>Standing start</option>
+            <option value="rolling">Rolling start</option>
+            <option value="flying">Flying start</option>
+          </select>
+        </label>
+        <div class="field full">
+          <div class="checkbox-row">
+            <input id="hand-adj" name="applyHandTimeAdjustment" type="checkbox">
+            <label for="hand-adj">
+              Apply estimated hand-time adjustment (+0.24s)
+              <div class="help">Hand times are usually faster than fully automatic times. Conversions are estimates and should not be treated as official marks.</div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Optional: top speed and splits</legend>
+      <div class="form-grid">
+        <label class="field">
+          <span class="label-text">Top speed</span>
+          <input name="topSpeed" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 21.5">
+        </label>
+        <label class="field">
+          <span class="label-text">Top speed unit</span>
+          <select name="topSpeedUnit">
+            <option value="mph" selected>mph</option>
+            <option value="ms">m/s</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">10-yard split (s)</span>
+          <input name="split10y" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+        <label class="field">
+          <span class="label-text">20-yard split (s)</span>
+          <input name="split20y" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+        <label class="field">
+          <span class="label-text">Flying 10m (s)</span>
+          <input name="flying10m" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+        <label class="field">
+          <span class="label-text">Flying 20m (s)</span>
+          <input name="flying20m" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+        <label class="field">
+          <span class="label-text">30m block time (s)</span>
+          <input name="block30m" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Optional: athlete profile (broad ranges only)</legend>
+      <p class="muted small">We do not collect names, schools, exact age, exact birthdays, location, or contact information.</p>
+      <div class="form-grid">
+        <label class="field">
+          <span class="label-text">Age range</span>
+          <select name="ageGroup">
+            <option value="">Not specified</option>
+            <option value="13-14">13–14</option>
+            <option value="15-16">15–16</option>
+            <option value="17-18">17–18</option>
+            <option value="college-adult">College / adult</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Sex / category</span>
+          <select name="sex">
+            <option value="not specified">Not specified</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Sport</span>
+          <select name="sport">
+            <option value="general athlete">General athlete</option>
+            <option value="football">Football</option>
+            <option value="baseball">Baseball</option>
+            <option value="soccer" selected>Soccer</option>
+            <option value="track">Track</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Position</span>
+          <select name="position">
+            <option value="all">All / not specified</option>
+            <option value="skill">Skill</option>
+            <option value="big-skill">Big skill</option>
+            <option value="lineman">Lineman</option>
+            <option value="outfield">Outfield</option>
+            <option value="infield">Infield</option>
+            <option value="forward">Forward / wing</option>
+            <option value="midfielder">Midfielder</option>
+            <option value="defender">Defender</option>
+          </select>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="btn-row">
+      <button type="submit" class="btn btn-primary">Calculate</button>
+      <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+  </form>
+</section>
+
+<section class="container results-anchor" aria-label="Results">
+  <h2>Results</h2>
+  <div id="sc-results"></div>
+</section>
+
+<section class="container">
+  <div class="card">
+      <h2>About the soccer 30m benchmark</h2>
+      <p>The reference ranges shown are general performance tiers for trained competitive male players. Female-specific and youth-specific ranges are not yet included because we have not added strong cited sources. We would rather show no benchmark than show a misleading one.</p>
+      <p class="small muted">Performance varies based on timing method, surface, footwear, wind, start type, and testing conditions.</p>
+    </div>
+</section>
+
+<section class="container faq">
+  <h2>Frequently asked questions</h2>
+  <details>
+    <summary>My team measures the 30y instead of the 30m. Will the calculator still work?</summary>
+    <p>Yes. Choose 30 yards as the distance and the engine will still scale to other distances and use the soccer 30m benchmark for a directional comparison. The two distances differ by about 2.6 meters.</p>
+  </details>
+  <details>
+    <summary>Does this work for women's soccer testing?</summary>
+    <p>The calculator runs the math for any input, but the benchmark dataset for soccer 30m is currently sourced from a male-player reference. We chose not to publish a women's-specific tier without a strong cited source. Your conversions and speeds are still shown.</p>
+  </details>
+  <details>
+    <summary>What is a competitive 30m soccer time?</summary>
+    <p>Around 4.20 seconds is in the general 'competitive' range from our cited reference, with elite trained players running close to 3.70. These are broad ranges, not percentiles.</p>
+  </details>
+</section>
+
+<section class="container">
+  <h2>Related calculators</h2>
+  <div class="tile-grid">
+    <a class="tile" href="40-yard-dash-calculator.html"><h3>40-yard dash calculator</h3><p>Football-style 40 estimates with splits and benchmark tier.</p></a>
+    <a class="tile" href="30-yard-to-40-yard-converter.html"><h3>30 to 40 yard converter</h3><p>Convert a known 30-yard time to an estimated 40-yard time.</p></a>
+    <a class="tile" href="100m-to-40-yard-converter.html"><h3>100m to 40-yard converter</h3><p>Estimate a 40-yard from a 100-meter time.</p></a>
+    <a class="tile" href="sprint-speed-calculator.html"><h3>Sprint speed calculator</h3><p>Average and estimated top speed in mph, m/s, and km/h.</p></a>
+    <a class="tile" href="hand-time-to-fat-converter.html"><h3>Hand time to FAT converter</h3><p>Estimate a fully-automatic-time equivalent of a hand-timed run.</p></a>
+    <a class="tile" href="flying-10-flying-20-calculator.html"><h3>Flying 10 / Flying 20 calculator</h3><p>Estimate max velocity from a flying-segment time.</p></a>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Sprint Performance Calculator</h4>
+        <p class="small">Educational sprint estimation tools. Independent site. Not affiliated with any league, team, school, recruiting service, or timing company.</p>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="40-yard-dash-calculator.html">40-yard dash</a></li>
+          <li><a href="track-100m-calculator.html">Track 100m</a></li>
+          <li><a href="baseball-60-yard-dash-calculator.html">Baseball 60yd</a></li>
+          <li><a href="soccer-30m-sprint-calculator.html">Soccer 30m</a></li>
+          <li><a href="sprint-speed-calculator.html">Sprint speed</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="methodology.html">Methodology</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="accessibility.html">Accessibility</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal-line">© Sprint Performance Calculator. Estimates only. Not affiliated with NFL, NCAA, MLB, MLS, any team, school, or recruiting service.</p>
+  </div>
+</footer>
+
+<script src="data/benchmarks.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/benchmarks.js"></script>
+<script src="js/share.js"></script>
+<script>
+  window.SC.share.bootstrapCalculator({"defaults":{"distance":"30m","timing":"fat","startType":"standing","topSpeedUnit":"mph","sport":"soccer"}});
+</script>
+</body>
+</html>

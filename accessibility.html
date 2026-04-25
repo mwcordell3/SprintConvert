@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility | Sprint Performance Calculator</title>
+<meta name="description" content="Accessibility commitments for Sprint Performance Calculator. Semantic HTML, keyboard navigation, focus states, high contrast, reduced motion support, and 200% zoom.">
+<link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/accessibility.html">
+<link rel="stylesheet" href="css/styles.css">
+<meta name="theme-color" content="#0b1220">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span>Sprint Performance Calculator</a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Calculator</a></li>
+        <li><a href="40-yard-dash-calculator.html">40yd</a></li>
+        <li><a href="track-100m-calculator.html">100m</a></li>
+        <li><a href="methodology.html">Methodology</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="container">
+      <p><a href="index.html">← Back to calculator</a></p>
+      <h1>Accessibility</h1>
+      <p class="lead">What we've done to make this site usable for everyone, and how to report issues.</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="card">
+      <h2>Standards we follow</h2>
+      <p>We aim to follow practical Web Content Accessibility Guidelines (WCAG) 2.1 Level AA. We make no certification claims; this is a best-effort, ongoing commitment.</p>
+    </div>
+
+    <div class="card">
+      <h2>What's in place today</h2>
+      <ul>
+        <li>Semantic HTML — header, nav, main, section, footer landmarks throughout.</li>
+        <li>Skip-to-content link as the first focusable element on every page.</li>
+        <li>Visible labels on every form field. Placeholder text is never the only label.</li>
+        <li>aria-describedby for help and error text on form inputs.</li>
+        <li>aria-live regions on errors and result updates so assistive technology announces changes.</li>
+        <li>Full keyboard navigation. No mouse-only interactions.</li>
+        <li>Visible focus styles on all focusable elements.</li>
+        <li>High color contrast between text and background.</li>
+        <li>No reliance on color alone to communicate status — tier names are always shown as text.</li>
+        <li>No flashing animations. Reduced-motion users have all transitions removed.</li>
+        <li>Layout is usable at 200% browser zoom on a 360-pixel-wide viewport.</li>
+        <li>All buttons use clear text labels. Icon-only controls are avoided.</li>
+        <li>Error messages are clear, specific, and tied to the field that caused them.</li>
+        <li>Tables and cards reflow responsively without horizontal scrolling.</li>
+        <li>Decorative images use empty alt attributes; meaningful images use descriptive alt text.</li>
+        <li>No keyboard traps.</li>
+        <li>The contact path is plain text, not gated behind any modal or carousel.</li>
+        <li>Plain language is used wherever possible.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Known limitations</h2>
+      <p>We are an early-stage, low-budget educational site. We do not yet have a full third-party accessibility audit or assistive-technology test matrix. If you encounter an issue with a screen reader, voice control, switch device, or any other assistive technology, please report it so we can fix it.</p>
+    </div>
+
+    <div class="card">
+      <h2>Report an issue</h2>
+      <p>For accessibility issues, see the <a href="contact.html">contact page</a>. Specific reports — what page, what action, what expected vs. actual behavior — help us fix things faster.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Sprint Performance Calculator</h4>
+        <p class="small">Educational sprint estimation tools. Independent site. Not affiliated with any league, team, school, recruiting service, or timing company.</p>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="40-yard-dash-calculator.html">40-yard dash</a></li>
+          <li><a href="track-100m-calculator.html">Track 100m</a></li>
+          <li><a href="baseball-60-yard-dash-calculator.html">Baseball 60yd</a></li>
+          <li><a href="soccer-30m-sprint-calculator.html">Soccer 30m</a></li>
+          <li><a href="sprint-speed-calculator.html">Sprint speed</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="methodology.html">Methodology</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="accessibility.html">Accessibility</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal-line">© Sprint Performance Calculator. Estimates only. Not affiliated with NFL, NCAA, MLB, MLS, any team, school, or recruiting service.</p>
+  </div>
+</footer>
+</body>
+</html>

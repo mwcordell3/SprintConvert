@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology | Sprint Performance Calculator</title>
+<meta name="description" content="How the Sprint Performance Calculator estimates sprint conversions, what its limits are, and why benchmarks are general ranges and not exact percentiles.">
+<link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/methodology.html">
+<link rel="stylesheet" href="css/styles.css">
+<meta name="theme-color" content="#0b1220">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span>Sprint Performance Calculator</a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Calculator</a></li>
+        <li><a href="40-yard-dash-calculator.html">40yd</a></li>
+        <li><a href="track-100m-calculator.html">100m</a></li>
+        <li><a href="methodology.html" aria-current="page">Methodology</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="container">
+      <p><a href="index.html">← Back to calculator</a></p>
+      <h1>Methodology</h1>
+      <p class="lead">How estimates are produced, what they assume, and where the limits are.</p>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="card">
+      <h2>Sprinting is not linear</h2>
+      <p>Sprint performance is the result of three overlapping qualities: acceleration, maximum velocity, and speed endurance. Short sprints (10 to 30 yards) are dominated by acceleration. Mid-range sprints (40 to 60 yards, 60 meters) include the early max-velocity phase. Longer sprints (100 to 200 meters) add a speed-endurance demand because athletes cannot maintain peak velocity all the way through.</p>
+      <p>This means a single time at one distance does not perfectly predict times at other distances. The calculator scales between distances using reference proportions for a competitive male athlete with fully automatic timing (FAT) and a static start. Results become less precise the further the conversion has to extrapolate.</p>
+    </div>
+
+    <div class="card">
+      <h2>Short sprints measure acceleration more heavily</h2>
+      <p>A 10- or 20-yard time mostly reflects how quickly an athlete builds speed. Two athletes with the same 10-yard time can have very different 100-meter times because their max velocity and ability to hold it differ.</p>
+    </div>
+
+    <div class="card">
+      <h2>Longer sprints depend on max velocity and speed endurance</h2>
+      <p>From 60 meters onward, the slowdown phase becomes important. Even elite sprinters lose a few percent of their peak velocity by the end of a 100-meter race. The calculator's reference proportions account for this, but a measured top-speed input or a flying-segment time produces a more reliable longer-distance estimate.</p>
+    </div>
+
+    <div class="card">
+      <h2>Timing method changes results</h2>
+      <p>Hand stopwatches typically read 0.20 to 0.30 seconds faster than fully automatic timing. The calculator uses a +0.24-second adjustment for track-style hand times to estimate a FAT equivalent. For short combine-style tests the real difference can vary more, so the adjustment is presented as an estimate. Phone-video timing has frame-rate uncertainty and start-detection error and is treated as low confidence regardless of distance.</p>
+    </div>
+
+    <div class="card">
+      <h2>Start type changes results</h2>
+      <p>Block, 3-point, and standing starts all begin from rest, with small differences in the first few yards. Rolling and flying starts skip the acceleration phase, so a flying 40-yard time will look much faster than a stand-alone 40 from the same effort. The calculator normalizes the input to a static-start baseline so cross-distance comparisons are honest.</p>
+    </div>
+
+    <div class="card">
+      <h2>Hand time is not the same as FAT</h2>
+      <p>Even with the +0.24-second adjustment applied, a converted hand-time figure is an estimate, not an official mark. Treat it as directional information and record both numbers (the original hand time and the converted estimate) when sharing results.</p>
+    </div>
+
+    <div class="card">
+      <h2>Benchmarks are broad general ranges</h2>
+      <p>The benchmark dataset is intentionally small. It only includes cited general ranges where we have a clear public source — football 40-yard dash, baseball 60-yard dash, and soccer 30-meter sprint. We do not yet publish a 100-meter general-population benchmark, female-specific tables, or fine-grained age-specific ranges because we do not have strong cited sources for them and we would rather show no benchmark than show a misleading one.</p>
+    </div>
+
+    <div class="card">
+      <h2>No benchmark is an exact percentile</h2>
+      <p>A reported "Advanced" or "Elite" tier in this calculator is a broad guideline. It does not mean the athlete is in any specific percentile of any specific population, and it does not predict recruiting or roster outcomes.</p>
+    </div>
+
+    <div class="card">
+      <h2>Why we prioritize transparency over fake precision</h2>
+      <p>Many sprint calculators show two-decimal estimates with no caveats. We deliberately round, attach a confidence rating to every result, and flag inputs that limit reliability (phone video, flying starts, single-time entries, weak source data). The aim is to be more useful than thin calculator pages by being more honest about what the numbers mean.</p>
+    </div>
+
+    <div class="card">
+      <h2>Inputs we deliberately don't take</h2>
+      <p>We do not collect names, schools, exact birthdays, locations, or contact details. Athlete profile fields use broad ranges (age 13–14, 15–16, 17–18, college / adult; sex / category; sport; position) so the calculator stays useful without storing personal data. See the <a href="privacy.html">privacy page</a> for more.</p>
+    </div>
+
+    <div class="card">
+      <h2>Disclaimer</h2>
+      <p>This site provides estimated sprint conversions and general performance ranges for educational and training-reference purposes only. Results are not official marks, not exact percentiles, and should not be used as the sole basis for recruiting, scholarship, roster, medical, or training decisions.</p>
+      <p>No guarantee is made that any estimate, benchmark, or comparison is accurate for a specific athlete. Consult qualified coaches, trainers, or medical professionals before making training decisions. Use this site at your own risk. No warranty is provided.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Sprint Performance Calculator</h4>
+        <p class="small">Educational sprint estimation tools. Independent site. Not affiliated with any league, team, school, recruiting service, or timing company.</p>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="40-yard-dash-calculator.html">40-yard dash</a></li>
+          <li><a href="track-100m-calculator.html">Track 100m</a></li>
+          <li><a href="baseball-60-yard-dash-calculator.html">Baseball 60yd</a></li>
+          <li><a href="soccer-30m-sprint-calculator.html">Soccer 30m</a></li>
+          <li><a href="sprint-speed-calculator.html">Sprint speed</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="methodology.html">Methodology</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="accessibility.html">Accessibility</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal-line">© Sprint Performance Calculator. Estimates only. Not affiliated with NFL, NCAA, MLB, MLS, any team, school, or recruiting service.</p>
+  </div>
+</footer>
+</body>
+</html>

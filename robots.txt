@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mwcordell3.github.io/SprintConvert/sitemap.xml

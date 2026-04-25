@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hand Time to FAT Converter | Sprint Timing Estimate</title>
+<meta name="description" content="Estimate a fully-automatic timing equivalent of a hand-timed sprint. Applies a typical +0.24-second adjustment with caveats for combine-style tests.">
+<link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/hand-time-to-fat-converter.html">
+<link rel="stylesheet" href="css/styles.css">
+<meta name="theme-color" content="#0b1220">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hand Time to FAT Converter | Sprint Timing Estimate">
+<meta property="og:description" content="Estimate a fully-automatic timing equivalent of a hand-timed sprint. Applies a typical +0.24-second adjustment with caveats for combine-style tests.">
+<meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/hand-time-to-fat-converter.html">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Hand Time to FAT Converter","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/hand-time-to-fat-converter.html","description":"Estimate a fully-automatic timing equivalent of a hand-timed sprint. Applies a typical +0.24-second adjustment with caveats for combine-style tests."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"Hand Time to FAT Converter","item":"https://mwcordell3.github.io/SprintConvert/hand-time-to-fat-converter.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why exactly +0.24 seconds?","acceptedAnswer":{"@type":"Answer","text":"It is the long-standing estimated average for sprint hand times, used by various track organizations as an approximation. The actual delay varies between timers and conditions."}},{"@type":"Question","name":"Is the adjustment the same for a 40-yard dash and a 100m?","acceptedAnswer":{"@type":"Answer","text":"No. Track hand times use the +0.24 convention. Combine hand times can vary more because of the start-cue technique used. Treat any conversion in either direction as an estimate."}},{"@type":"Question","name":"What if my time was a phone video estimate?","acceptedAnswer":{"@type":"Answer","text":"Phone video timing is typically less accurate than a trained hand timer because of frame-rate uncertainty and start detection. The calculator marks phone-video inputs as low confidence regardless of distance."}}]}</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="index.html"><span class="brand-dot" aria-hidden="true"></span>Sprint Performance Calculator</a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Calculator</a></li>
+        <li><a href="40-yard-dash-calculator.html">40yd</a></li>
+        <li><a href="track-100m-calculator.html">100m</a></li>
+        <li><a href="methodology.html">Methodology</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
+
+<section class="hero">
+  <div class="container">
+    <p><a href="index.html">← Back to all calculators</a></p>
+    <h1>Hand Time to FAT Converter</h1>
+    <p class="lead">Convert a hand-timed sprint to an estimated fully-automatic timing (FAT) equivalent. The classic +0.24-second adjustment is applied with full disclosure of its limits.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="card">
+      <p>Hand stopwatches start later than electronic systems because of human reaction time. For track-style sprints (60m, 100m, 200m) the standard estimated adjustment is to add 0.24 seconds when converting hand to FAT. For short combine-style tests (40 yards), timing systems and starting cues vary more, so the real difference may be anywhere from 0.10 to 0.30 seconds.</p>
+      <p>This calculator applies the +0.24-second adjustment automatically when you choose the "Hand timed" option, or when you tick the manual hand-time adjustment box. The result is an estimate — not an official conversion.</p>
+    </div>
+</section>
+
+<section class="container">
+  <h2>Calculator</h2>
+  <div id="sc-errors" role="alert" aria-live="assertive"></div>
+  <form id="sc-form" novalidate aria-describedby="sc-form-help">
+    <p id="sc-form-help" class="muted small">All fields with * are required. Optional fields below improve the estimate.</p>
+
+    <fieldset>
+      <legend>Required inputs</legend>
+      <div class="form-grid">
+        <label class="field">
+          <span class="label-text">Distance *</span>
+          <select name="distance" required>
+            <option value="10y">10 yards</option>
+            <option value="20y">20 yards</option>
+            <option value="30y">30 yards</option>
+            <option value="40y" selected>40 yards</option>
+            <option value="60y">60 yards</option>
+            <option value="60m">60 meters</option>
+            <option value="100m">100 meters</option>
+            <option value="200m">200 meters</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Time (seconds) *</span>
+          <input name="time" type="number" inputmode="decimal" step="0.01" min="0.01" required placeholder="e.g. 4.50">
+        </label>
+        <label class="field">
+          <span class="label-text">Timing method *</span>
+          <select name="timing" required>
+            <option value="fat">Fully automatic timing (FAT)</option>
+            <option value="laser">Laser timed</option>
+            <option value="hand" selected>Hand timed</option>
+            <option value="phone">Phone video estimate</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Start type *</span>
+          <select name="startType" required>
+            <option value="3point" selected>3-point start</option>
+            <option value="block">Block start</option>
+            <option value="standing">Standing start</option>
+            <option value="rolling">Rolling start</option>
+            <option value="flying">Flying start</option>
+          </select>
+        </label>
+        <div class="field full">
+          <div class="checkbox-row">
+            <input id="hand-adj" name="applyHandTimeAdjustment" type="checkbox">
+            <label for="hand-adj">
+              Apply estimated hand-time adjustment (+0.24s)
+              <div class="help">Hand times are usually faster than fully automatic times. Conversions are estimates and should not be treated as official marks.</div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Optional: top speed and splits</legend>
+      <div class="form-grid">
+        <label class="field">
+          <span class="label-text">Top speed</span>
+          <input name="topSpeed" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 21.5">
+        </label>
+        <label class="field">
+          <span class="label-text">Top speed unit</span>
+          <select name="topSpeedUnit">
+            <option value="mph" selected>mph</option>
+            <option value="ms">m/s</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">10-yard split (s)</span>
+          <input name="split10y" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+        <label class="field">
+          <span class="label-text">20-yard split (s)</span>
+          <input name="split20y" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+        <label class="field">
+          <span class="label-text">Flying 10m (s)</span>
+          <input name="flying10m" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+        <label class="field">
+          <span class="label-text">Flying 20m (s)</span>
+          <input name="flying20m" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+        <label class="field">
+          <span class="label-text">30m block time (s)</span>
+          <input name="block30m" type="number" inputmode="decimal" step="0.01" min="0">
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Optional: athlete profile (broad ranges only)</legend>
+      <p class="muted small">We do not collect names, schools, exact age, exact birthdays, location, or contact information.</p>
+      <div class="form-grid">
+        <label class="field">
+          <span class="label-text">Age range</span>
+          <select name="ageGroup">
+            <option value="">Not specified</option>
+            <option value="13-14">13–14</option>
+            <option value="15-16">15–16</option>
+            <option value="17-18">17–18</option>
+            <option value="college-adult">College / adult</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Sex / category</span>
+          <select name="sex">
+            <option value="not specified">Not specified</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Sport</span>
+          <select name="sport">
+            <option value="general athlete" selected>General athlete</option>
+            <option value="football">Football</option>
+            <option value="baseball">Baseball</option>
+            <option value="soccer">Soccer</option>
+            <option value="track">Track</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="label-text">Position</span>
+          <select name="position">
+            <option value="all">All / not specified</option>
+            <option value="skill">Skill</option>
+            <option value="big-skill">Big skill</option>
+            <option value="lineman">Lineman</option>
+            <option value="outfield">Outfield</option>
+            <option value="infield">Infield</option>
+            <option value="forward">Forward / wing</option>
+            <option value="midfielder">Midfielder</option>
+            <option value="defender">Defender</option>
+          </select>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="btn-row">
+      <button type="submit" class="btn btn-primary">Calculate</button>
+      <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+  </form>
+</section>
+
+<section class="container results-anchor" aria-label="Results">
+  <h2>Results</h2>
+  <div id="sc-results"></div>
+</section>
+
+<section class="container">
+  <div class="card">
+      <h2>What the +0.24s adjustment is, and isn't</h2>
+      <ul>
+        <li>It is a long-standing average adjustment used for track hand-times to estimate a FAT equivalent.</li>
+        <li>It assumes a stationary timer reacting to the gun or starting motion. Phone video, helper-with-stopwatch, and combine timing all behave a bit differently.</li>
+        <li>It is not an official conversion — never present a converted time as the athlete's official mark.</li>
+        <li>Real differences for the same effort have been measured anywhere from 0.10s to 0.30s depending on technique and equipment.</li>
+      </ul>
+    </div>
+</section>
+
+<section class="container faq">
+  <h2>Frequently asked questions</h2>
+  <details>
+    <summary>Why exactly +0.24 seconds?</summary>
+    <p>It is the long-standing estimated average for sprint hand times, used by various track organizations as an approximation. The actual delay varies between timers and conditions.</p>
+  </details>
+  <details>
+    <summary>Is the adjustment the same for a 40-yard dash and a 100m?</summary>
+    <p>No. Track hand times use the +0.24 convention. Combine hand times can vary more because of the start-cue technique used. Treat any conversion in either direction as an estimate.</p>
+  </details>
+  <details>
+    <summary>What if my time was a phone video estimate?</summary>
+    <p>Phone video timing is typically less accurate than a trained hand timer because of frame-rate uncertainty and start detection. The calculator marks phone-video inputs as low confidence regardless of distance.</p>
+  </details>
+</section>
+
+<section class="container">
+  <h2>Related calculators</h2>
+  <div class="tile-grid">
+    <a class="tile" href="40-yard-dash-calculator.html"><h3>40-yard dash calculator</h3><p>Football-style 40 estimates with splits and benchmark tier.</p></a>
+    <a class="tile" href="30-yard-to-40-yard-converter.html"><h3>30 to 40 yard converter</h3><p>Convert a known 30-yard time to an estimated 40-yard time.</p></a>
+    <a class="tile" href="100m-to-40-yard-converter.html"><h3>100m to 40-yard converter</h3><p>Estimate a 40-yard from a 100-meter time.</p></a>
+    <a class="tile" href="sprint-speed-calculator.html"><h3>Sprint speed calculator</h3><p>Average and estimated top speed in mph, m/s, and km/h.</p></a>
+    <a class="tile" href="flying-10-flying-20-calculator.html"><h3>Flying 10 / Flying 20 calculator</h3><p>Estimate max velocity from a flying-segment time.</p></a>
+    <a class="tile" href="baseball-60-yard-dash-calculator.html"><h3>Baseball 60-yard dash</h3><p>60-yard estimate with general recruiting tiers.</p></a>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Sprint Performance Calculator</h4>
+        <p class="small">Educational sprint estimation tools. Independent site. Not affiliated with any league, team, school, recruiting service, or timing company.</p>
+      </div>
+      <div>
+        <h4>Calculators</h4>
+        <ul>
+          <li><a href="40-yard-dash-calculator.html">40-yard dash</a></li>
+          <li><a href="track-100m-calculator.html">Track 100m</a></li>
+          <li><a href="baseball-60-yard-dash-calculator.html">Baseball 60yd</a></li>
+          <li><a href="soccer-30m-sprint-calculator.html">Soccer 30m</a></li>
+          <li><a href="sprint-speed-calculator.html">Sprint speed</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="methodology.html">Methodology</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+          <li><a href="accessibility.html">Accessibility</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal-line">© Sprint Performance Calculator. Estimates only. Not affiliated with NFL, NCAA, MLB, MLS, any team, school, or recruiting service.</p>
+  </div>
+</footer>
+
+<script src="data/benchmarks.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/validation.js"></script>
+<script src="js/benchmarks.js"></script>
+<script src="js/share.js"></script>
+<script>
+  window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"hand","startType":"3point","topSpeedUnit":"mph","sport":"general athlete"}});
+</script>
+</body>
+</html>
