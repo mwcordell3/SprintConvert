@@ -1,12 +1,4 @@
-/* Sprint Performance Calculator — Copy & Share Helpers
- * -------------------------------------------------------
- * Provides:
- *   - copyResultsToClipboard(text)        Copies a plain-text summary
- *   - buildShareUrl(formState)            Builds a URL with query params
- *   - readShareUrl(searchString)          Reads query params back into a form
- *
- * No analytics, no tracking, no third-party services.
- */
+/* Sprint Performance Calculator - Copy & Share Helpers */
 (function () {
   "use strict";
 
@@ -22,7 +14,6 @@
     if (navigator.clipboard && navigator.clipboard.writeText) {
       return navigator.clipboard.writeText(text);
     }
-    // Fallback for older browsers
     return new Promise(function (resolve, reject) {
       try {
         var ta = document.createElement("textarea");
@@ -63,29 +54,20 @@
     return out;
   }
 
-  /**
-   * Build a simple plain-text summary of a result for clipboard sharing.
-   * Stays minimal so the user can paste it into a text/email easily.
-   */
   function buildResultText(input, result) {
     var lines = [];
-    lines.push("Sprint Performance Calculator — estimate");
+    lines.push("Sprint Performance Calculator - estimate");
     lines.push("Input: " + input.distance + " in " + input.time + "s (" + input.timing + ", " + input.startType + " start)");
-    lines.push("Confidence: " + result.confidence.level.toUpperCase() + " — " + result.confidence.explanation);
+    lines.push("Confidence: " + result.confidence.level.toUpperCase() + " - " + result.confidence.explanation);
     lines.push("");
     lines.push("Estimated splits / conversions:");
     Object.keys(result.estimates).forEach(function (k) {
-      lines.push("  " + k.padEnd(5, " ") + " ≈ " + result.estimates[k] + "s");
+      lines.push("  " + k.padEnd(5, " ") + " = " + result.estimates[k] + "s");
     });
     lines.push("");
-    lines.push("Speeds (avg over input distance): " +
-      result.speeds.avgMph + " mph / " +
-      result.speeds.avgMs  + " m/s / " +
-      result.speeds.avgKmh + " km/h");
+    lines.push("Speeds (avg over input distance): " + result.speeds.avgMph + " mph / " + result.speeds.avgMs + " m/s / " + result.speeds.avgKmh + " km/h");
     if (result.speeds.topMph) {
-      lines.push("Estimated top speed: " +
-        result.speeds.topMph + " mph / " +
-        result.speeds.topMs  + " m/s");
+      lines.push("Estimated top speed: " + result.speeds.topMph + " mph / " + result.speeds.topMs + " m/s");
     }
     lines.push("");
     lines.push("Acceleration: "    + result.subScores.acceleration.tier   + " (" + result.subScores.acceleration.score   + ")");
@@ -93,8 +75,7 @@
     lines.push("Speed endurance: " + result.subScores.speedEndurance.tier + " (" + result.subScores.speedEndurance.score + ")");
     if (result.benchmark) {
       lines.push("");
-      lines.push("Benchmark tier (" + result.benchmark.match.sport + " " + result.benchmark.match.distance + "): " +
-        (result.benchmark.tier || "n/a"));
+      lines.push("Benchmark tier (" + result.benchmark.match.sport + " " + result.benchmark.match.distance + "): " + (result.benchmark.tier || "n/a"));
       lines.push("Source: " + result.benchmark.match.sourceName);
     }
     lines.push("");
@@ -102,10 +83,6 @@
     return lines.join("\n");
   }
 
-  /**
-   * Read a calculator <form> into a flat formState object the rest of the
-   * library understands.
-   */
   function readForm(form) {
     var fd = new FormData(form);
     var obj = {};
@@ -114,7 +91,6 @@
       if (k === "applyHandTimeAdjustment") obj[k] = !!v;
       else obj[k] = v === null ? "" : v;
     });
-    // Wrap profile fields under .profile for the engine
     obj.profile = {
       ageGroup: obj.ageGroup || null,
       sex: obj.sex || null,
@@ -124,7 +100,6 @@
     return obj;
   }
 
-  /** Pre-fill a form from an object of share keys (URL params or saved state). */
   function applyDefaults(form, defaults) {
     if (!form || !defaults) return;
     Object.keys(defaults).forEach(function (k) {
@@ -139,17 +114,6 @@
     });
   }
 
-  /**
-   * One-call setup for a calculator page. Wires the form, calculate / reset
-   * buttons, copy / share actions, error display, and result rendering.
-   *
-   * Options:
-   *   formId       – id of the <form>          (default "sc-form")
-   *   resultsId    – id of the results <div>   (default "sc-results")
-   *   errorsId     – id of the errors <div>    (default "sc-errors")
-   *   defaults     – object of pre-fill values applied if URL has no params
-   *   onResult     – optional callback(input, result)
-   */
   function bootstrapCalculator(options) {
     options = options || {};
     var form     = document.getElementById(options.formId    || "sc-form");
@@ -157,7 +121,6 @@
     var errors   = document.getElementById(options.errorsId  || "sc-errors");
     if (!form || !results || !errors) return;
 
-    // Pre-fill from URL params if present, else from caller defaults.
     var urlState = readShareUrl();
     var hasUrl = Object.keys(urlState).length > 0;
     applyDefaults(form, hasUrl ? urlState : (options.defaults || {}));
@@ -165,18 +128,17 @@
     var lastInput = null;
     var lastResult = null;
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      compute();
-    });
+    form.addEventListener("submit", function (e) { e.preventDefault(); compute(); });
 
     form.addEventListener("reset", function () {
-      // Allow native reset to clear, then clear results panel.
       setTimeout(function () {
         results.innerHTML = "";
         errors.innerHTML = "";
         lastInput = lastResult = null;
-        // Re-apply any caller defaults so the form stays useful after reset.
+        if (options.revealId) {
+          var wrap = document.getElementById(options.revealId);
+          if (wrap) wrap.setAttribute("hidden", "");
+        }
         if (options.defaults) applyDefaults(form, options.defaults);
       }, 0);
     });
@@ -188,13 +150,13 @@
       var status = results.querySelector(".share-status");
       if (t.getAttribute("data-sc-action") === "copy") {
         copyResultsToClipboard(buildResultText(lastInput, lastResult))
-          .then(function () { status.textContent = "Results copied to clipboard."; })
-          .catch(function ()  { status.textContent = "Could not copy. You can manually select the text above."; });
+          .then(function () { if (status) status.textContent = "Results copied to clipboard."; })
+          .catch(function ()  { if (status) status.textContent = "Could not copy. Select the text above to copy manually."; });
       } else if (t.getAttribute("data-sc-action") === "share") {
         var formState = readForm(form);
         copyResultsToClipboard(buildShareUrl(formState))
-          .then(function () { status.textContent = "Share link copied — paste it anywhere."; })
-          .catch(function ()  { status.textContent = "Could not copy share link."; });
+          .then(function () { if (status) status.textContent = "Share link copied - paste it anywhere."; })
+          .catch(function ()  { if (status) status.textContent = "Could not copy share link."; });
       }
     });
 
@@ -208,7 +170,7 @@
           var li = document.createElement("li"); li.textContent = msg; ul.appendChild(li);
         });
         errors.appendChild(ul);
-        errors.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        try { errors.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch (e) {}
         return;
       }
       try {
@@ -217,15 +179,24 @@
         results.innerHTML = "";
         results.appendChild(window.SC.benchmarks.renderResults(v.normalized, result));
         if (options.onResult) options.onResult(v.normalized, result);
+
+        if (options.revealId) {
+          var wrap = document.getElementById(options.revealId);
+          if (wrap && wrap.hasAttribute("hidden")) wrap.removeAttribute("hidden");
+        }
+        if (options.scrollOnResult !== false) {
+          var target = (options.revealId && document.getElementById(options.revealId)) || results;
+          var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          try {
+            target.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
+          } catch (e) { target.scrollIntoView(); }
+        }
       } catch (err) {
         errors.textContent = "Something went wrong: " + (err && err.message ? err.message : "unknown error");
       }
     }
 
-    // If URL has parameters, run the calculation immediately.
-    if (hasUrl && urlState.distance && urlState.time) {
-      compute();
-    }
+    if (hasUrl && urlState.distance && urlState.time) compute();
   }
 
   if (typeof window !== "undefined") {
