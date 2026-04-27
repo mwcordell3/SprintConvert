@@ -141,7 +141,8 @@ input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent)}
 @media (max-width:959px){.report-sidebar{position:static}}
 
 .results-anchor{scroll-margin-top:80px}
-.results-section[hidden]{display:none}
+.results-section[hidden]{display:none !important}
+[hidden]{display:none !important}
 .confidence-card .conf-level{font-size:1.05rem}
 .conf-low strong{color:var(--tier-developing)}
 .conf-medium strong{color:var(--tier-competitive)}

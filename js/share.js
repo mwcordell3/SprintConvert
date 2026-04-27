@@ -185,11 +185,17 @@
           if (wrap && wrap.hasAttribute("hidden")) wrap.removeAttribute("hidden");
         }
         if (options.scrollOnResult !== false) {
-          var target = (options.revealId && document.getElementById(options.revealId)) || results;
+          // Scroll to the actual generated cards, not the wrapper heading.
+          var target = options.scrollTargetId
+            ? (document.getElementById(options.scrollTargetId) || results)
+            : results;
           var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-          try {
-            target.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
-          } catch (e) { target.scrollIntoView(); }
+          // Wait one frame so the unhide layout has settled before scrolling.
+          requestAnimationFrame(function () {
+            try {
+              target.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
+            } catch (e) { target.scrollIntoView(); }
+          });
         }
       } catch (err) {
         errors.textContent = "Something went wrong: " + (err && err.message ? err.message : "unknown error");
