@@ -125,10 +125,8 @@
         <details class="form-section">
           <summary>Advanced inputs (optional)</summary>
           <div class="details-body">
-            <p class="help-line">Adding splits or a measured top speed improves the confidence rating.</p>
+            <p class="help-line">Adding splits or a flying segment improves the confidence rating.</p>
             <div class="form-grid">
-              <label class="field"><span class="label-text">Top speed</span><input name="topSpeed" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 21.5"><span class="help">Optional. From a GPS watch or radar.</span></label>
-              <label class="field"><span class="label-text">Top speed unit</span><select name="topSpeedUnit"><option value="mph" selected>mph</option><option value="ms">m/s</option></select></label>
               <label class="field"><span class="label-text">10-yard split (s)</span><input name="split10y" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 1.65"></label>
               <label class="field"><span class="label-text">20-yard split (s)</span><input name="split20y" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 2.65"></label>
               <label class="field"><span class="label-text">Flying 10m (s)</span><input name="flying10m" type="number" inputmode="decimal" step="0.01" min="0" placeholder="e.g. 0.94"></label>
@@ -271,7 +269,7 @@
 <script src="js/share.js"></script>
 <script>
   window.SC.share.bootstrapCalculator({
-    defaults: { distance: "40y", timing: "fat", startType: "3point", topSpeedUnit: "mph", sport: "general athlete" },
+    defaults: { distance: "40y", timing: "fat", startType: "3point", sport: "general athlete" },
     revealId: "sc-results-section",
     scrollTargetId: "sc-results",
     scrollOnResult: true

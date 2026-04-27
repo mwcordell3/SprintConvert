@@ -188,7 +188,7 @@
   function computeConfidence(input) {
     var hasSplit = !!(input.split10y || input.split20y || input.flying10m ||
                       input.flying20m || input.block30m);
-    var hasTopSpeed = !!input.topSpeed;
+    var hasTopSpeed = !!(input.topSpeed || input.flying10m || input.flying20m);
     var movingStart = (input.startType === "rolling" || input.startType === "flying");
     var weakTiming  = (input.timing === "hand" || input.timing === "phone");
 
