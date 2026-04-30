@@ -7,11 +7,15 @@
 <meta name="description" content="Convert a 100-meter sprint time to an estimated 40-yard dash. Educational converter with hand-time adjustment, start-type adjustment, and a confidence rating.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/100m-to-40-yard-converter.html">
 <link rel="stylesheet" href="css/styles.css">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:title" content="100m to 40 Yard Dash Converter | Sprint Estimate Tool">
 <meta property="og:description" content="Convert a 100-meter sprint time to an estimated 40-yard dash. Educational converter with hand-time adjustment, start-type adjustment, and a confidence rating.">
 <meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/100m-to-40-yard-converter.html">
+<meta property="og:image" content="https://mwcordell3.github.io/SprintConvert/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sprint Performance Calculator. Estimate 10yd, 30yd, 40yd, 60m, 100m, 200m sprint times.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"100m to 40 Yard Converter","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/100m-to-40-yard-converter.html","description":"Convert a 100-meter sprint time to an estimated 40-yard dash. Educational converter with hand-time adjustment, start-type adjustment, and a confidence rating."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"100m to 40 Yard Converter","item":"https://mwcordell3.github.io/SprintConvert/100m-to-40-yard-converter.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"I ran 11.0 in the 100m. What 40 should I expect?","acceptedAnswer":{"@type":"Answer","text":"It depends on your start technique. Track athletes coming over to football testing often run slightly slower 40s at first because the 3-point start is unfamiliar. The calculator gives you a directional estimate — treat it as a starting point, not a guarantee."}},{"@type":"Question","name":"Should I use a 100m split from a 200m as input?","acceptedAnswer":{"@type":"Answer","text":"If you only have a 200m time, use the main calculator with 200m as the distance — the engine handles speed-endurance scaling differently than a stand-alone 100."}},{"@type":"Question","name":"Why is the confidence usually medium for this conversion?","acceptedAnswer":{"@type":"Answer","text":"We're crossing acceleration-heavy and max-velocity distances. Without splits or a measured top speed, the model can only scale proportionally."}}]}</script>
@@ -186,7 +190,7 @@
   </form>
 </section>
 
-<section class="container results-anchor" aria-label="Results">
+<section class="container results-section results-anchor" id="sc-results-section" aria-label="Results" hidden>
   <h2>Results</h2>
   <div id="sc-results"></div>
 </section>
@@ -265,13 +269,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js"></script>
-<script src="js/calculator.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/benchmarks.js"></script>
-<script src="js/share.js"></script>
-<script>
-  window.SC.share.bootstrapCalculator({"defaults":{"distance":"100m","timing":"fat","startType":"block","topSpeedUnit":"mph","sport":"track"}});
-</script>
+<script src="data/benchmarks.js" defer></script>
+<script src="js/calculator.js" defer></script>
+<script src="js/validation.js" defer></script>
+<script src="js/benchmarks.js" defer></script>
+<script src="js/share.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({"defaults":{"distance":"100m","timing":"fat","startType":"block","topSpeedUnit":"mph","sport":"track"},"revealId":"sc-results-section","scrollTargetId":"sc-results","scrollOnResult":true});});</script>
 </body>
 </html>

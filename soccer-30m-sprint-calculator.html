@@ -7,11 +7,15 @@
 <meta name="description" content="Estimate a soccer 30-meter sprint time, average speed, and a general competitive tier. Educational tool with cited benchmark range and confidence rating.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/soccer-30m-sprint-calculator.html">
 <link rel="stylesheet" href="css/styles.css">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Soccer 30m Sprint Calculator | Speed Test Estimate">
 <meta property="og:description" content="Estimate a soccer 30-meter sprint time, average speed, and a general competitive tier. Educational tool with cited benchmark range and confidence rating.">
 <meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/soccer-30m-sprint-calculator.html">
+<meta property="og:image" content="https://mwcordell3.github.io/SprintConvert/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sprint Performance Calculator. Estimate 10yd, 30yd, 40yd, 60m, 100m, 200m sprint times.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Soccer 30m Sprint Calculator","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/soccer-30m-sprint-calculator.html","description":"Estimate a soccer 30-meter sprint time, average speed, and a general competitive tier. Educational tool with cited benchmark range and confidence rating."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"Soccer 30m Sprint Calculator","item":"https://mwcordell3.github.io/SprintConvert/soccer-30m-sprint-calculator.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"My team measures the 30y instead of the 30m. Will the calculator still work?","acceptedAnswer":{"@type":"Answer","text":"Yes. Choose 30 yards as the distance and the engine will still scale to other distances and use the soccer 30m benchmark for a directional comparison. The two distances differ by about 2.6 meters."}},{"@type":"Question","name":"Does this work for women's soccer testing?","acceptedAnswer":{"@type":"Answer","text":"The calculator runs the math for any input, but the benchmark dataset for soccer 30m is currently sourced from a male-player reference. We chose not to publish a women's-specific tier without a strong cited source. Your conversions and speeds are still shown."}},{"@type":"Question","name":"What is a competitive 30m soccer time?","acceptedAnswer":{"@type":"Answer","text":"Around 4.20 seconds is in the general 'competitive' range from our cited reference, with elite trained players running close to 3.70. These are broad ranges, not percentiles."}}]}</script>
@@ -188,7 +192,7 @@
   </form>
 </section>
 
-<section class="container results-anchor" aria-label="Results">
+<section class="container results-section results-anchor" id="sc-results-section" aria-label="Results" hidden>
   <h2>Results</h2>
   <div id="sc-results"></div>
 </section>
@@ -263,13 +267,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js"></script>
-<script src="js/calculator.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/benchmarks.js"></script>
-<script src="js/share.js"></script>
-<script>
-  window.SC.share.bootstrapCalculator({"defaults":{"distance":"30m","timing":"fat","startType":"standing","topSpeedUnit":"mph","sport":"soccer"}});
-</script>
+<script src="data/benchmarks.js" defer></script>
+<script src="js/calculator.js" defer></script>
+<script src="js/validation.js" defer></script>
+<script src="js/benchmarks.js" defer></script>
+<script src="js/share.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({"defaults":{"distance":"30m","timing":"fat","startType":"standing","topSpeedUnit":"mph","sport":"soccer"},"revealId":"sc-results-section","scrollTargetId":"sc-results","scrollOnResult":true});});</script>
 </body>
 </html>

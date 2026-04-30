@@ -1,51 +1,71 @@
 # Sprint Performance Calculator
 
-A static, GitHub-Pages-friendly sprint estimation tool for athletes, parents,
-coaches, and trainers. No backend, no database, no accounts, no email capture.
-All math runs in the browser.
+A static, GitHub-Pages-friendly sprint estimation tool for athletes,
+parents, coaches, and trainers. No backend, no database, no accounts,
+no email capture. All math runs in the browser.
 
-> **Educational only.** Estimates are not official marks, not exact percentiles,
-> and should not be used as the sole basis for recruiting, scholarship, roster,
-> medical, or training decisions.
+> **Educational only.** Estimates are not official marks, not exact
+> percentiles, and should not be used as the sole basis for recruiting,
+> scholarship, roster, medical, or training decisions.
+
+Live: https://mwcordell3.github.io/SprintConvert/
 
 ---
 
 ## Run locally
 
-The site is plain HTML, CSS, and vanilla JavaScript. No build step is required.
-
-Any static-file server will do. A few quick options from the project root:
-
 ```bash
-# Python 3 (built-in)
-python3 -m http.server 8080
-
-# Node (one-shot, no install)
-npx --yes http-server -p 8080 .
-
-# Or just double-click index.html
+python3 -m http.server 8080         # then open http://localhost:8080
+# or:  npx --yes http-server -p 8080 .
 ```
-
-Then visit <http://localhost:8080> and the calculators all work.
-
-> **Tip:** when opening `index.html` directly with `file://`, the share-link
-> "copy" button copies a `file://` URL. Use a local server when testing share
-> links.
 
 ---
 
 ## Publish on GitHub Pages
 
-1. Push the project to a public GitHub repo (e.g. `SprintConvert`).
-2. In the repo, go to **Settings → Pages**.
-3. Under **Build and deployment**, set **Source** to `Deploy from a branch`.
-4. Pick the branch (usually `main`) and folder (`/` root).
-5. Save. Within a minute the site is live at
-   `https://<your-user>.github.io/<repo>/`.
-6. The site is already configured for the canonical URL
-   `https://mwcordell3.github.io/SprintConvert/`. If you fork to a different
-   repo or domain, search-and-replace that URL across the project (see
-   "Editing things" below).
+The `main` branch is served from the repo root. Push and Pages
+auto-rebuilds within ~30 seconds.
+
+To enable Pages from scratch: repo Settings -> Pages -> Source
+"Deploy from a branch" -> `main` / `(root)` -> Save.
+
+---
+
+## Custom domain
+
+When you buy a domain (Namecheap, Cloudflare Registrar, etc.):
+
+1. Rename `CNAME.example` -> `CNAME` and put your domain in it
+   (one line, no `https://`, e.g. `sprintconvert.com`).
+2. At your registrar, add a `CNAME` DNS record pointing
+   `www` to `mwcordell3.github.io`.
+3. For the apex (`sprintconvert.com` without www) add four `A` records
+   to GitHub's IPs:
+   `185.199.108.153`, `185.199.109.153`,
+   `185.199.110.153`, `185.199.111.153`.
+4. Push the `CNAME` change. GitHub Pages will provision an SSL cert
+   automatically within ~15 minutes.
+5. Search-and-replace `mwcordell3.github.io/SprintConvert/` ->
+   `<your-domain>/` in every HTML file, `sitemap.xml`, and
+   `robots.txt` so canonical URLs and structured data match the new
+   home. Push again; Pages will rebuild.
+
+---
+
+## Search engines (do this on launch day)
+
+1. Google Search Console — https://search.google.com/search-console
+   * "Add property" -> URL prefix -> paste your URL
+   * Verify with the HTML-tag method: paste the
+     `<meta name="google-site-verification" ...>` they give you into
+     the `<head>` of `index.html`. Push.
+   * Submit `sitemap.xml`.
+2. Bing Webmaster Tools — https://www.bing.com/webmasters
+   * Same drill, or import directly from Google Search Console.
+3. The sitemap now includes `<lastmod>` for every URL — search
+   engines use it to decide re-crawl frequency, so update those
+   dates whenever you ship meaningful changes (a tiny script is
+   the easiest way; otherwise edit by hand).
 
 ---
 
@@ -53,129 +73,98 @@ Then visit <http://localhost:8080> and the calculators all work.
 
 ```
 .
-├─ index.html                              ← homepage with main calculator
-├─ 40-yard-dash-calculator.html            ← sport-specific pages
-├─ 30-yard-to-40-yard-converter.html
-├─ 100m-to-40-yard-converter.html
-├─ sprint-speed-calculator.html
-├─ hand-time-to-fat-converter.html
-├─ flying-10-flying-20-calculator.html
-├─ baseball-60-yard-dash-calculator.html
-├─ soccer-30m-sprint-calculator.html
-├─ track-100m-calculator.html
-├─ methodology.html                        ← static info pages
-├─ privacy.html
-├─ terms.html
-├─ accessibility.html
-├─ contact.html
-├─ css/
-│   └─ styles.css                          ← single stylesheet
-├─ js/
-│   ├─ calculator.js                       ← core math (sprint conversion model)
-│   ├─ validation.js                       ← input parsing + error messages
-│   ├─ benchmarks.js                       ← results + benchmark tier rendering
-│   └─ share.js                            ← copy / share-link / form bootstrap
-├─ data/
-│   └─ benchmarks.js                       ← cited benchmark dataset (verified only)
-├─ sitemap.xml
-├─ robots.txt
-└─ README.md
++- index.html                              <- homepage (main calculator)
++- 40-yard-dash-calculator.html            <- 9 sport-specific pages
++- 30-yard-to-40-yard-converter.html
++- 100m-to-40-yard-converter.html
++- sprint-speed-calculator.html
++- hand-time-to-fat-converter.html
++- flying-10-flying-20-calculator.html
++- baseball-60-yard-dash-calculator.html
++- soccer-30m-sprint-calculator.html
++- track-100m-calculator.html
++- methodology.html
++- privacy.html
++- terms.html
++- accessibility.html
++- contact.html
++- 404.html
++- css/styles.css                          <- single stylesheet
++- js/calculator.js                        <- core math (REF male+female)
++- js/validation.js
++- js/benchmarks.js                        <- result + benchmark rendering
++- js/share.js                             <- bootstrap, copy, share
++- data/benchmarks.js                      <- cited benchmark dataset
++- img/og-image.png                        <- social preview image
++- sitemap.xml
++- robots.txt
++- CNAME.example                           <- rename to CNAME for custom domain
++- README.md
 ```
 
 ---
 
 ## Editing things
 
-### Change benchmark data
+### Sprint reference values
 
-Edit `data/benchmarks.js`. Each entry must include a `sourceName`,
-`sourceUrl`, and a `confidence` of `"verified"`, `"general"`, or
-`"placeholder"`. **Placeholder entries are never used for comparison.**
+`js/calculator.js` exposes two reference tables:
+`REF_MALE` and `REF_FEMALE`. The `refFor(profile)` helper picks
+the right one based on `profile.sex`. To recalibrate against new
+test data, edit those tables and the corresponding entries in
+`topSpeedFactor()` and `subScoreAnchors()`.
 
-> **Do not invent data.** It is better to show no benchmark than a misleading
-> one. Do not publish weak or unsourced ranges. Do not invent age-specific or
-> sex-specific tables without strong cited sources. Do not present any
-> benchmark as an exact percentile or as a recruiting prediction.
+### Benchmark data
 
-### Update legal pages
+`data/benchmarks.js`. Each entry needs `sourceName`, `sourceUrl`,
+and a `confidence` of `"verified"`, `"general"`, or
+`"placeholder"`. **Placeholder entries are never displayed for
+comparison.** Do not invent data — if you can't cite it, don't
+publish it.
 
-Edit `privacy.html`, `terms.html`, and `accessibility.html` directly. The
-language used in those files is starter language for an early-stage site and
-should be reviewed by a qualified attorney before scaling.
+### Legal pages
 
-### Add analytics later
+Edit `privacy.html`, `terms.html`, and `accessibility.html`
+directly. Current language is starter text. Have an attorney review
+before scaling, before adding ads or affiliate links, and before
+adding any kind of email capture. The Texas governing-law clause
+in `terms.html` is a placeholder; update to your actual jurisdiction.
 
-There is no analytics in v1. If you add analytics:
+### Adding analytics later
 
-1. Update `privacy.html` first to disclose what is collected, by which
-   provider, for what purpose, and how to opt out.
-2. Add the analytics snippet to the bottom of each HTML page (or, more
-   maintainably, add a single shared script and include it on every page).
-3. Confirm the snippet does not break Core Web Vitals (defer / async).
+There is no analytics in v1. If you add some:
+1. Update `privacy.html` first to disclose the provider, what is
+   collected, retention, and opt-out.
+2. Add the snippet (use `defer` or `async` to keep CWV intact).
 
-### Add affiliate disclosures later
+### Adding affiliate links later
 
-There are no affiliate links in v1. If you add any:
-
-1. Update `privacy.html` and `terms.html` to disclose the affiliate
+There are none in v1. If you add any:
+1. Update both `privacy.html` and `terms.html` to disclose the
    relationship.
-2. Add a visible disclosure near the link itself, for example:
-   > "Some links may be affiliate links. If you buy through them, we may earn
-   > a commission at no extra cost to you."
-3. Do not gate calculator results behind affiliate clicks.
-4. Do not insert affiliate links into the methodology page or anywhere they
-   could be mistaken for editorial recommendations.
-
-### Add email capture later
-
-There is no email capture in v1. If you add it:
-
-1. Update `privacy.html` first to disclose the storage, sharing, retention,
-   and unsubscribe policies.
-2. Make the field optional and useful (for example: save my sprint report,
-   track times over the season, get a testing template).
-3. Do not require email to see calculator output. Do not use manipulative
-   email gates.
-
-### Change the canonical URL
-
-Search-and-replace `https://mwcordell3.github.io/SprintConvert/` across all
-HTML files, `sitemap.xml`, and `robots.txt`.
-
-### Change the contact email
-
-The contact email is in `contact.html`. Replace `sprintconvert@outlook.com`
-with whatever address you want to receive corrections, source suggestions,
-and accessibility issue reports at.
-
-### Add a new sport calculator page
-
-Copy one of the existing sport-specific pages (for example
-`40-yard-dash-calculator.html`), update the title, meta description, hero
-copy, FAQs, and the bootstrap defaults at the bottom of the file. Add the new
-page to `sitemap.xml` and to the navigation lists in the homepage and footer.
+2. Show a visible disclosure near the link itself.
+3. Never gate calculator output behind affiliate clicks.
 
 ---
 
 ## Important reminders
 
-- **Do not knowingly collect personal information from children under 13.** No
-  exact age, exact birthday, name, school, location, or email anywhere.
-- **Do not publish unsupported benchmark claims.** Cite a source. Mark the
-  confidence honestly.
-- **Replace the contact email** in `contact.html` if you need a different
-  inbox. The default is `sprintconvert@outlook.com`.
-- **Legal pages are starter language.** Have an attorney review before
-  scaling, before adding ads or affiliates, and before adding any kind of
-  email capture.
-- **No fake authority.** Do not present estimates as official marks. Do not
-  imply affiliation with the NFL, NCAA, MLB, MLS, any school, team, recruiting
-  service, or timing company.
+- **No personal data from minors.** No exact age, exact birthday,
+  name, school, location, or email anywhere.
+- **No fabricated benchmarks.** Cite a source. Mark confidence honestly.
+- **Female estimates use a separate reference table** so the result
+  reflects female sprint performance norms, not male-calibrated math.
+  When you find better cited female data, update `REF_FEMALE` and
+  the female anchors in `subScoreAnchors()`.
+- **Replace the contact email** in `contact.html` if you need a
+  different inbox. Default: `sprintconvert@outlook.com`.
+- **No "ADA Compliant" badge.** No accessibility-overlay widgets.
+- **Don't publish weak benchmark claims.** Better to show no benchmark.
 
 ---
 
 ## License
 
-Source code in this repo is released under the MIT License. Benchmark data is
-cited from third-party sources — those sources retain their own rights;
-treat the dataset as fair-use educational reference only.
+Source code in this repo is released under the MIT License. Benchmark
+data is cited from third-party sources; those sources retain their own
+rights. Treat the dataset as fair-use educational reference only.

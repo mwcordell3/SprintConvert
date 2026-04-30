@@ -7,11 +7,15 @@
 <meta name="description" content="Estimate maximum sprint velocity from a flying 10m or flying 20m time. Useful for tracking top-end speed in training. Educational tool with confidence rating.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/flying-10-flying-20-calculator.html">
 <link rel="stylesheet" href="css/styles.css">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Flying 10 and Flying 20 Calculator | Max Velocity Sprint Tool">
 <meta property="og:description" content="Estimate maximum sprint velocity from a flying 10m or flying 20m time. Useful for tracking top-end speed in training. Educational tool with confidence rating.">
 <meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/flying-10-flying-20-calculator.html">
+<meta property="og:image" content="https://mwcordell3.github.io/SprintConvert/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sprint Performance Calculator. Estimate 10yd, 30yd, 40yd, 60m, 100m, 200m sprint times.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Flying 10/20 Calculator","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/flying-10-flying-20-calculator.html","description":"Estimate maximum sprint velocity from a flying 10m or flying 20m time. Useful for tracking top-end speed in training. Educational tool with confidence rating."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"Flying 10/20 Calculator","item":"https://mwcordell3.github.io/SprintConvert/flying-10-flying-20-calculator.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What's a good flying 20 time?","acceptedAnswer":{"@type":"Answer","text":"Trained sprinters often run flying 20m times around 1.95 to 1.85 seconds; elite sprinters break 1.80. Treat these as broad ranges, not exact percentiles."}},{"@type":"Question","name":"Why is the confidence sometimes low for flying inputs?","acceptedAnswer":{"@type":"Answer","text":"Flying segments don't capture the start or acceleration phases, so converting a flying time to a stand-alone 40 (which is start-heavy) is a directional estimate at best."}},{"@type":"Question","name":"Can I track progress with this?","acceptedAnswer":{"@type":"Answer","text":"Yes. Take measurements under similar conditions and compare top-speed values across sessions. Watch the change, not the absolute number."}}]}</script>
@@ -187,7 +191,7 @@
   </form>
 </section>
 
-<section class="container results-anchor" aria-label="Results">
+<section class="container results-section results-anchor" id="sc-results-section" aria-label="Results" hidden>
   <h2>Results</h2>
   <div id="sc-results"></div>
 </section>
@@ -266,13 +270,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js"></script>
-<script src="js/calculator.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/benchmarks.js"></script>
-<script src="js/share.js"></script>
-<script>
-  window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"fat","startType":"flying","topSpeedUnit":"mph","sport":"general athlete"}});
-</script>
+<script src="data/benchmarks.js" defer></script>
+<script src="js/calculator.js" defer></script>
+<script src="js/validation.js" defer></script>
+<script src="js/benchmarks.js" defer></script>
+<script src="js/share.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"fat","startType":"flying","topSpeedUnit":"mph","sport":"general athlete"},"revealId":"sc-results-section","scrollTargetId":"sc-results","scrollOnResult":true});});</script>
 </body>
 </html>

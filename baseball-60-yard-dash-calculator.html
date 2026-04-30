@@ -7,11 +7,15 @@
 <meta name="description" content="Estimate a baseball 60-yard dash time, speed, and a general recruiting tier. Educational tool with general recruiting tiers from cited public guidelines.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/baseball-60-yard-dash-calculator.html">
 <link rel="stylesheet" href="css/styles.css">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Baseball 60 Yard Dash Calculator | Speed & Benchmark Estimate">
 <meta property="og:description" content="Estimate a baseball 60-yard dash time, speed, and a general recruiting tier. Educational tool with general recruiting tiers from cited public guidelines.">
 <meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/baseball-60-yard-dash-calculator.html">
+<meta property="og:image" content="https://mwcordell3.github.io/SprintConvert/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sprint Performance Calculator. Estimate 10yd, 30yd, 40yd, 60m, 100m, 200m sprint times.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Baseball 60 Yard Calculator","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/baseball-60-yard-dash-calculator.html","description":"Estimate a baseball 60-yard dash time, speed, and a general recruiting tier. Educational tool with general recruiting tiers from cited public guidelines."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"Baseball 60 Yard Calculator","item":"https://mwcordell3.github.io/SprintConvert/baseball-60-yard-dash-calculator.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is a 6.8 sixty good for college baseball?","acceptedAnswer":{"@type":"Answer","text":"A 6.80 falls inside the cited 'advanced' range from public recruiting guidelines for high school and college. Surface, technique, and timing equipment can shift the result, so treat the tier as broad context."}},{"@type":"Question","name":"Should I use a standing or rocker start?","acceptedAnswer":{"@type":"Answer","text":"Pick the start type the testing facility uses. The calculator's standing-start option treats both similarly. If you used a flying-build-up, choose Rolling start to keep the conversion honest."}},{"@type":"Question","name":"Does this predict whether I will be recruited?","acceptedAnswer":{"@type":"Answer","text":"No. This calculator does not predict, guarantee, or otherwise determine recruiting outcomes. Talk to coaches and recruiting professionals for guidance specific to your situation."}}]}</script>
@@ -187,7 +191,7 @@
   </form>
 </section>
 
-<section class="container results-anchor" aria-label="Results">
+<section class="container results-section results-anchor" id="sc-results-section" aria-label="Results" hidden>
   <h2>Results</h2>
   <div id="sc-results"></div>
 </section>
@@ -262,13 +266,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js"></script>
-<script src="js/calculator.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/benchmarks.js"></script>
-<script src="js/share.js"></script>
-<script>
-  window.SC.share.bootstrapCalculator({"defaults":{"distance":"60y","timing":"fat","startType":"standing","topSpeedUnit":"mph","sport":"baseball"}});
-</script>
+<script src="data/benchmarks.js" defer></script>
+<script src="js/calculator.js" defer></script>
+<script src="js/validation.js" defer></script>
+<script src="js/benchmarks.js" defer></script>
+<script src="js/share.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({"defaults":{"distance":"60y","timing":"fat","startType":"standing","topSpeedUnit":"mph","sport":"baseball"},"revealId":"sc-results-section","scrollTargetId":"sc-results","scrollOnResult":true});});</script>
 </body>
 </html>

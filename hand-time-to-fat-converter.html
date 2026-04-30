@@ -7,11 +7,15 @@
 <meta name="description" content="Estimate a fully-automatic timing equivalent of a hand-timed sprint. Applies a typical +0.24-second adjustment with caveats for combine-style tests.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/hand-time-to-fat-converter.html">
 <link rel="stylesheet" href="css/styles.css">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Hand Time to FAT Converter | Sprint Timing Estimate">
 <meta property="og:description" content="Estimate a fully-automatic timing equivalent of a hand-timed sprint. Applies a typical +0.24-second adjustment with caveats for combine-style tests.">
 <meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/hand-time-to-fat-converter.html">
+<meta property="og:image" content="https://mwcordell3.github.io/SprintConvert/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sprint Performance Calculator. Estimate 10yd, 30yd, 40yd, 60m, 100m, 200m sprint times.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Hand Time to FAT Converter","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/hand-time-to-fat-converter.html","description":"Estimate a fully-automatic timing equivalent of a hand-timed sprint. Applies a typical +0.24-second adjustment with caveats for combine-style tests."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"Hand Time to FAT Converter","item":"https://mwcordell3.github.io/SprintConvert/hand-time-to-fat-converter.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why exactly +0.24 seconds?","acceptedAnswer":{"@type":"Answer","text":"It is the long-standing estimated average for sprint hand times, used by various track organizations as an approximation. The actual delay varies between timers and conditions."}},{"@type":"Question","name":"Is the adjustment the same for a 40-yard dash and a 100m?","acceptedAnswer":{"@type":"Answer","text":"No. Track hand times use the +0.24 convention. Combine hand times can vary more because of the start-cue technique used. Treat any conversion in either direction as an estimate."}},{"@type":"Question","name":"What if my time was a phone video estimate?","acceptedAnswer":{"@type":"Answer","text":"Phone video timing is typically less accurate than a trained hand timer because of frame-rate uncertainty and start detection. The calculator marks phone-video inputs as low confidence regardless of distance."}}]}</script>
@@ -187,7 +191,7 @@
   </form>
 </section>
 
-<section class="container results-anchor" aria-label="Results">
+<section class="container results-section results-anchor" id="sc-results-section" aria-label="Results" hidden>
   <h2>Results</h2>
   <div id="sc-results"></div>
 </section>
@@ -266,13 +270,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js"></script>
-<script src="js/calculator.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/benchmarks.js"></script>
-<script src="js/share.js"></script>
-<script>
-  window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"hand","startType":"3point","topSpeedUnit":"mph","sport":"general athlete"}});
-</script>
+<script src="data/benchmarks.js" defer></script>
+<script src="js/calculator.js" defer></script>
+<script src="js/validation.js" defer></script>
+<script src="js/benchmarks.js" defer></script>
+<script src="js/share.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"hand","startType":"3point","topSpeedUnit":"mph","sport":"general athlete"},"revealId":"sc-results-section","scrollTargetId":"sc-results","scrollOnResult":true});});</script>
 </body>
 </html>

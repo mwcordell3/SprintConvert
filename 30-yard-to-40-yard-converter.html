@@ -7,11 +7,15 @@
 <meta name="description" content="Convert a 30-yard sprint time to an estimated 40-yard dash. Educational tool with timing-method and start-type adjustments and a confidence rating.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/30-yard-to-40-yard-converter.html">
 <link rel="stylesheet" href="css/styles.css">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:title" content="30 Yard to 40 Yard Dash Converter | Sprint Estimate Tool">
 <meta property="og:description" content="Convert a 30-yard sprint time to an estimated 40-yard dash. Educational tool with timing-method and start-type adjustments and a confidence rating.">
 <meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/30-yard-to-40-yard-converter.html">
+<meta property="og:image" content="https://mwcordell3.github.io/SprintConvert/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sprint Performance Calculator. Estimate 10yd, 30yd, 40yd, 60m, 100m, 200m sprint times.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"30 to 40 Yard Converter","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/30-yard-to-40-yard-converter.html","description":"Convert a 30-yard sprint time to an estimated 40-yard dash. Educational tool with timing-method and start-type adjustments and a confidence rating."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"30 to 40 Yard Converter","item":"https://mwcordell3.github.io/SprintConvert/30-yard-to-40-yard-converter.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is a 30-yard time really a good predictor of a 40?","acceptedAnswer":{"@type":"Answer","text":"It's better than nothing and useful for spot-checks, but it's not perfect. The last 10 yards of a 40 emphasize max velocity more than the first 30, and athletes with strong top-end speed will out-perform an extrapolation from their 30 alone."}},{"@type":"Question","name":"What if my 30-yard split came from a longer run?","acceptedAnswer":{"@type":"Answer","text":"If you ran a full 40 and recorded a 30-yard split along the way, that's slightly different from a stand-alone 30-yard run. The estimate is still useful, but consider entering both the split and the full distance for a stronger result."}},{"@type":"Question","name":"Can I do the reverse — 40 to 30?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the main calculator and enter your 40-yard time; the result table includes an estimated 30-yard split."}}]}</script>
@@ -187,7 +191,7 @@
   </form>
 </section>
 
-<section class="container results-anchor" aria-label="Results">
+<section class="container results-section results-anchor" id="sc-results-section" aria-label="Results" hidden>
   <h2>Results</h2>
   <div id="sc-results"></div>
 </section>
@@ -267,13 +271,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js"></script>
-<script src="js/calculator.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/benchmarks.js"></script>
-<script src="js/share.js"></script>
-<script>
-  window.SC.share.bootstrapCalculator({"defaults":{"distance":"30y","timing":"fat","startType":"3point","topSpeedUnit":"mph","sport":"football"}});
-</script>
+<script src="data/benchmarks.js" defer></script>
+<script src="js/calculator.js" defer></script>
+<script src="js/validation.js" defer></script>
+<script src="js/benchmarks.js" defer></script>
+<script src="js/share.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({"defaults":{"distance":"30y","timing":"fat","startType":"3point","topSpeedUnit":"mph","sport":"football"},"revealId":"sc-results-section","scrollTargetId":"sc-results","scrollOnResult":true});});</script>
 </body>
 </html>

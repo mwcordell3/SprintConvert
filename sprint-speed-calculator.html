@@ -7,11 +7,15 @@
 <meta name="description" content="Calculate your sprint speed in mph, m/s, and km/h. Average speed across a known distance plus an estimated peak velocity, with confidence rating and benchmark context.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/sprint-speed-calculator.html">
 <link rel="stylesheet" href="css/styles.css">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sprint Speed Calculator | MPH, m/s, km/h">
 <meta property="og:description" content="Calculate your sprint speed in mph, m/s, and km/h. Average speed across a known distance plus an estimated peak velocity, with confidence rating and benchmark context.">
 <meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/sprint-speed-calculator.html">
+<meta property="og:image" content="https://mwcordell3.github.io/SprintConvert/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sprint Performance Calculator. Estimate 10yd, 30yd, 40yd, 60m, 100m, 200m sprint times.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Sprint Speed Calculator","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/sprint-speed-calculator.html","description":"Calculate your sprint speed in mph, m/s, and km/h. Average speed across a known distance plus an estimated peak velocity, with confidence rating and benchmark context."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"Sprint Speed Calculator","item":"https://mwcordell3.github.io/SprintConvert/sprint-speed-calculator.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What's a good sprint speed in mph for a high-school athlete?","acceptedAnswer":{"@type":"Answer","text":"Top sprint speeds for high-school and college athletes typically fall between 18 and 23 mph, with elite track sprinters peaking above 25 mph. These are general ranges, not percentiles."}},{"@type":"Question","name":"Why does my estimated top speed look slow for short distances?","acceptedAnswer":{"@type":"Answer","text":"The shorter the input distance, the less of the max-velocity phase you actually ran. The fallback estimator amplifies the average to compensate, but a measured value or a flying 20m time will give a much better number."}},{"@type":"Question","name":"Can I enter my GPS-watch reading for top speed?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the optional Top speed field and pick the appropriate unit (mph or m/s). Sport GPS readings are typically within a couple of percent of true peak speed in open conditions."}}]}</script>
@@ -186,7 +190,7 @@
   </form>
 </section>
 
-<section class="container results-anchor" aria-label="Results">
+<section class="container results-section results-anchor" id="sc-results-section" aria-label="Results" hidden>
   <h2>Results</h2>
   <div id="sc-results"></div>
 </section>
@@ -265,13 +269,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js"></script>
-<script src="js/calculator.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/benchmarks.js"></script>
-<script src="js/share.js"></script>
-<script>
-  window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"fat","startType":"3point","topSpeedUnit":"mph","sport":"general athlete"}});
-</script>
+<script src="data/benchmarks.js" defer></script>
+<script src="js/calculator.js" defer></script>
+<script src="js/validation.js" defer></script>
+<script src="js/benchmarks.js" defer></script>
+<script src="js/share.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"fat","startType":"3point","topSpeedUnit":"mph","sport":"general athlete"},"revealId":"sc-results-section","scrollTargetId":"sc-results","scrollOnResult":true});});</script>
 </body>
 </html>

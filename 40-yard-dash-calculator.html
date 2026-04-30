@@ -7,11 +7,15 @@
 <meta name="description" content="Estimate your 40-yard dash time, average speed, top speed, and general performance tier. Football-style calculator with hand-time adjustment, splits, and confidence rating.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/40-yard-dash-calculator.html">
 <link rel="stylesheet" href="css/styles.css">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:title" content="40 Yard Dash Calculator | Estimate Speed, Splits & Performance Tier">
 <meta property="og:description" content="Estimate your 40-yard dash time, average speed, top speed, and general performance tier. Football-style calculator with hand-time adjustment, splits, and confidence rating.">
 <meta property="og:url" content="https://mwcordell3.github.io/SprintConvert/40-yard-dash-calculator.html">
+<meta property="og:image" content="https://mwcordell3.github.io/SprintConvert/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sprint Performance Calculator. Estimate 10yd, 30yd, 40yd, 60m, 100m, 200m sprint times.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"40 Yard Dash Calculator","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/40-yard-dash-calculator.html","description":"Estimate your 40-yard dash time, average speed, top speed, and general performance tier. Football-style calculator with hand-time adjustment, splits, and confidence rating."}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"40 Yard Dash Calculator","item":"https://mwcordell3.github.io/SprintConvert/40-yard-dash-calculator.html"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is a 4.5 forty good?","acceptedAnswer":{"@type":"Answer","text":"A 4.50 hand-timed 40 is typically slower than a 4.50 fully-automatic time because hand stopwatches start later. Either way, a 4.50 is in the elite range of our general high-school / college football benchmark. Treat the tier as broad guidance, not an exact percentile."}},{"@type":"Question","name":"How is the calculator estimating my 100m time from a 40?","acceptedAnswer":{"@type":"Answer","text":"It scales your normalized 40 time using reference proportions for a competitive male athlete with FAT timing and a static start. Sprinting is not linear — short distances are acceleration-heavy and longer distances depend on max velocity and speed endurance — so the estimate becomes less precise the further the conversion goes."}},{"@type":"Question","name":"Should I check the hand-time adjustment box?","acceptedAnswer":{"@type":"Answer","text":"Check it if your time was recorded by a person with a stopwatch and you want to estimate a fully-automatic equivalent. The +0.24-second adjustment is an estimate, not an exact conversion. For short combine-style tests timing systems vary and the real difference may be 0.10 to 0.30 seconds."}},{"@type":"Question","name":"Why does the result include a confidence rating?","acceptedAnswer":{"@type":"Answer","text":"Sprint conversions get more reliable with more data. A single hand-timed run gets a low rating; a FAT run with a measured top speed and splits gets a high rating. The rating is shown so you can decide how much weight to give the estimate."}}]}</script>
@@ -187,7 +191,7 @@
   </form>
 </section>
 
-<section class="container results-anchor" aria-label="Results">
+<section class="container results-section results-anchor" id="sc-results-section" aria-label="Results" hidden>
   <h2>Results</h2>
   <div id="sc-results"></div>
 </section>
@@ -272,13 +276,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js"></script>
-<script src="js/calculator.js"></script>
-<script src="js/validation.js"></script>
-<script src="js/benchmarks.js"></script>
-<script src="js/share.js"></script>
-<script>
-  window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"fat","startType":"3point","topSpeedUnit":"mph","sport":"football"}});
-</script>
+<script src="data/benchmarks.js" defer></script>
+<script src="js/calculator.js" defer></script>
+<script src="js/validation.js" defer></script>
+<script src="js/benchmarks.js" defer></script>
+<script src="js/share.js" defer></script>
+<script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"fat","startType":"3point","topSpeedUnit":"mph","sport":"football"},"revealId":"sc-results-section","scrollTargetId":"sc-results","scrollOnResult":true});});</script>
 </body>
 </html>

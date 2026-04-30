@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+# Don't index calculator URLs that include a user's filled-in form (share links).
+Disallow: /*?
 
 Sitemap: https://mwcordell3.github.io/SprintConvert/sitemap.xml
