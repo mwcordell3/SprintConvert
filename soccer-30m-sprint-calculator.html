@@ -111,6 +111,16 @@
     </fieldset>
 
     <fieldset>
+      <legend>Sex / category</legend>
+      <p class="help-line" style="margin: -4px 0 var(--space-3) 0;">Affects the calculation. Female uses a separate reference table.</p>
+      <div class="radio-row" role="radiogroup">
+        <label class="radio-pill"><input type="radio" name="sex" value="not specified" checked><span>Not specified</span></label>
+        <label class="radio-pill"><input type="radio" name="sex" value="male"><span>Male</span></label>
+        <label class="radio-pill"><input type="radio" name="sex" value="female"><span>Female</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
       <legend>Optional: top speed and splits</legend>
       <div class="form-grid">
         <label class="field">
@@ -148,14 +158,6 @@
             <option value="15-16">15–16</option>
             <option value="17-18">17–18</option>
             <option value="college-adult">College / adult</option>
-          </select>
-        </label>
-        <label class="field">
-          <span class="label-text">Sex / category</span>
-          <select name="sex">
-            <option value="not specified">Not specified</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
           </select>
         </label>
         <label class="field">

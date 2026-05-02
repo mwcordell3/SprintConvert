@@ -127,6 +127,17 @@
           </div>
         </section>
 
+
+        <section class="form-section" aria-labelledby="sec-sex">
+          <h3 id="sec-sex">Sex / category</h3>
+          <p class="help-line">Affects the calculation. Female uses a separate reference table.</p>
+          <div class="radio-row" role="radiogroup" aria-labelledby="sec-sex">
+            <label class="radio-pill"><input type="radio" name="sex" value="not specified" checked><span>Not specified</span></label>
+            <label class="radio-pill"><input type="radio" name="sex" value="male"><span>Male</span></label>
+            <label class="radio-pill"><input type="radio" name="sex" value="female"><span>Female</span></label>
+          </div>
+        </section>
+
         <details class="form-section">
           <summary>Advanced inputs (optional)</summary>
           <div class="details-body">
@@ -147,7 +158,6 @@
             <p class="help-line">Used only to choose a benchmark range. We never collect names, schools, exact age, location, or contact information.</p>
             <div class="form-grid">
               <label class="field"><span class="label-text">Age range</span><select name="ageGroup"><option value="">Not specified</option><option value="13-14">13-14</option><option value="15-16">15-16</option><option value="17-18">17-18</option><option value="college-adult">College / adult</option></select></label>
-              <label class="field"><span class="label-text">Sex / category</span><select name="sex"><option value="not specified">Not specified</option><option value="male">Male</option><option value="female">Female</option></select></label>
               <label class="field"><span class="label-text">Sport</span><select name="sport"><option value="general athlete">General athlete</option><option value="football">Football</option><option value="baseball">Baseball</option><option value="soccer">Soccer</option><option value="track">Track</option></select></label>
               <label class="field"><span class="label-text">Position</span><select name="position"><option value="all">All / not specified</option><option value="skill">Skill</option><option value="big-skill">Big skill</option><option value="lineman">Lineman</option><option value="outfield">Outfield</option><option value="infield">Infield</option><option value="forward">Forward / wing</option><option value="midfielder">Midfielder</option><option value="defender">Defender</option></select></label>
             </div>

@@ -40,16 +40,23 @@
   // level run roughly 8–13% slower than male reference values across distances,
   // with a slightly larger gap at longer distances because peak velocity
   // differences compound over time.
+  // Calibrated to "advanced collegiate competitive" female sprinter:
+  // 100m around 12.20 FAT (national-meet level), 200m around 24.80.
+  // Source notes: women's 100m WR 10.49 (Griffith Joyner, 1988); women's
+  // 200m WR 21.34 (same); D1 outdoor 100m all-American is ~11.30-11.70;
+  // mid-tier D1 100m is ~12.00-12.40. The reference table sits at the
+  // upper-mid D1 range so "advanced" reads as nationally competitive,
+  // matching how the male table is calibrated.
   var REF_FEMALE = {
-    "10y":  1.85,
-    "20y":  3.05,
-    "30y":  4.10,
-    "30m":  4.40,
-    "40y":  5.30,
-    "60y":  7.40,
-    "60m":  7.95,
-    "100m": 12.50,
-    "200m": 25.60
+    "10y":  1.78,
+    "20y":  2.95,
+    "30y":  3.95,
+    "30m":  4.25,
+    "40y":  5.10,
+    "60y":  7.10,
+    "60m":  7.65,
+    "100m": 12.20,
+    "200m": 24.80
   };
 
   function refFor(profile) {
@@ -180,9 +187,10 @@
   function subScoreAnchors(profile) {
     var female = profile && profile.sex === "female";
     return {
-      accel10y: female ? [2.20, 1.65] : [1.95, 1.45],
-      maxV:     female ? [6.5, 10.0]  : [7.0, 11.5],   // m/s
-      end200m:  female ? [30.5, 22.5] : [28.0, 20.0]
+      // [developing, elite] - lower time / higher speed = better
+      accel10y: female ? [2.10, 1.65] : [1.95, 1.45],
+      maxV:     female ? [6.8, 10.7]  : [7.0, 11.5],   // m/s; FloJo peak ~10.7
+      end200m:  female ? [28.0, 21.5] : [28.0, 20.0]
     };
   }
 

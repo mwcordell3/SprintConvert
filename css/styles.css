@@ -219,3 +219,11 @@ input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent)}
 @media print{.site-header,.site-footer,.btn,details.form-section,.report-sidebar{display:none}body{background:#fff}}
 
 .visually-hidden{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Radio pill group (sex/category and similar) */
+.radio-row{display:flex;gap:8px;flex-wrap:wrap}
+.radio-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--border-strong);border-radius:999px;background:var(--bg);cursor:pointer;font-weight:500;font-size:.95rem;transition:border-color .15s ease,background .15s ease,color .15s ease}
+.radio-pill input{margin:0;accent-color:var(--accent)}
+.radio-pill:hover{border-color:var(--text)}
+.radio-pill:has(input:checked){background:var(--accent-soft);border-color:var(--accent);color:var(--accent-2);font-weight:700}
+.radio-pill input:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:50%}
