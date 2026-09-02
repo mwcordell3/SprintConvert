@@ -50,20 +50,32 @@
     return out;
   }
 
+  function resultKeyLabel(key, input, result) {
+    if (result && key === result.srcKey) return key + " entered";
+    if (input && input.split10y && key === "10y") return key + " entered split";
+    if (input && input.split20y && key === "20y") return key + " entered split";
+    if (input && input.block30m && key === "30m") return key + " entered 30m";
+    return key;
+  }
+
   function buildResultText(input, result) {
     var lines = [];
+    var tableEstimates = result.displayEstimates || result.estimates;
     lines.push("Sprint Performance Calculator - estimate");
     lines.push("Input: " + input.distance + " in " + input.time + "s (" + input.timing + ", " + input.startType + " start)");
+    if (result.adjustment && result.adjustment.applied && result.adjustment.enteredTime !== result.adjustment.normalizedTime) {
+      lines.push("Entered time shown: " + result.adjustment.enteredTime.toFixed(2) + "s. Adjusted baseline used for other estimates: " + result.adjustment.normalizedTime.toFixed(2) + "s.");
+    }
     lines.push("Confidence: " + result.confidence.level.toUpperCase() + " - " + result.confidence.explanation);
     if (result.maxSpeedApplied) lines.push("Top-speed constraint: applied from " + result.maxSpeedSource + ".");
     if (result.splitAnchorsUsed && result.splitAnchorsUsed.length) lines.push("Split anchors used: " + result.splitAnchorsUsed.join(", ") + ".");
     lines.push("");
-    lines.push("Estimated splits / conversions:");
-    Object.keys(result.estimates).forEach(function (k) {
-      lines.push("  " + k.padEnd(5, " ") + " = " + result.estimates[k] + "s");
+    lines.push("Displayed times and estimated conversions:");
+    Object.keys(tableEstimates).forEach(function (k) {
+      lines.push("  " + resultKeyLabel(k, input, result).padEnd(18, " ") + " = " + tableEstimates[k] + "s");
     });
     lines.push("");
-    lines.push("Speeds (avg over input distance): " + result.speeds.avgMph + " mph / " + result.speeds.avgMs + " m/s / " + result.speeds.avgKmh + " km/h");
+    lines.push("Speeds (avg over entered distance/time): " + result.speeds.avgMph + " mph / " + result.speeds.avgMs + " m/s / " + result.speeds.avgKmh + " km/h");
     if (result.speeds.topMph) lines.push("Estimated top speed: " + result.speeds.topMph + " mph / " + result.speeds.topMs + " m/s");
     lines.push("");
     lines.push("Acceleration: " + result.subScores.acceleration.tier + " (" + result.subScores.acceleration.score + ")");
