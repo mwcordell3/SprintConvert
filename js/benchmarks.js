@@ -1,4 +1,4 @@
-/* Sprint Performance Calculator — Benchmark Display Helpers
+/* Sprint Performance Calculator - Benchmark Display Helpers
  * -------------------------------------------------------
  * Renders the benchmark card and the "no benchmark for this profile"
  * fallback. Always cites the source. Never invents data.
@@ -28,10 +28,22 @@
     return node;
   }
 
-  /**
-   * Build the benchmark card DOM for a result. Returns an HTMLElement.
-   * If `result.benchmark` is null, renders the standard "no benchmark" card.
-   */
+  function distanceLabel(input, result, d) {
+    if (result && d.key === result.srcKey) return d.label + " (entered)";
+    if (input && input.split10y && d.key === "10y") return d.label + " (entered split)";
+    if (input && input.split20y && d.key === "20y") return d.label + " (entered split)";
+    if (input && input.block30m && d.key === "30m") return d.label + " (entered 30m)";
+    return d.label;
+  }
+
+  function adjustmentText(input, result) {
+    if (!input || !result || !result.adjustment || !result.adjustment.applied) return null;
+    if (result.adjustment.enteredTime === result.adjustment.normalizedTime) return null;
+    var calc = window.SC.calculator;
+    var label = calc && calc.DISTANCE_BY_KEY[result.srcKey] ? calc.DISTANCE_BY_KEY[result.srcKey].label : "input";
+    return "Your entered " + label + " time stays " + result.adjustment.enteredTime.toFixed(2) + "s in the table. For the other estimates, the model used a " + result.adjustment.normalizedTime.toFixed(2) + "s adjusted baseline after timing/start adjustments.";
+  }
+
   function renderBenchmarkCard(result) {
     var card = el("section", { class: "card benchmark-card", "aria-label": "Benchmark comparison" });
     card.appendChild(el("h3", { text: "Benchmark comparison" }));
@@ -53,16 +65,14 @@
       [el("strong", { text: "General tier: " }), document.createTextNode(tier || "Unavailable")]);
     card.appendChild(heading);
 
-    card.appendChild(el("p", {},
-      [
-        document.createTextNode("Compared to general "),
-        el("em", { text: b.sport + " " + distLabel + " (" + b.category + ")" }),
-        document.createTextNode(" using your estimated " + distLabel + " time of "),
-        el("strong", { text: compared + "s" }),
-        document.createTextNode(".")
-      ]));
+    card.appendChild(el("p", {}, [
+      document.createTextNode("Compared to general "),
+      el("em", { text: b.sport + " " + distLabel + " (" + b.category + ")" }),
+      document.createTextNode(" using your displayed " + distLabel + " time of "),
+      el("strong", { text: compared + "s" }),
+      document.createTextNode(".")
+    ]));
 
-    // Tier ladder (visual)
     var ladder = el("ul", { class: "tier-ladder", "aria-label": "Tier thresholds (lower time is faster)" });
     [
       { label: "Developing", val: b.developing },
@@ -72,83 +82,68 @@
     ].forEach(function (row) {
       var li = el("li", { class: row.label === tier ? "active" : "" }, [
         el("span", { class: "tier-name", text: row.label }),
-        el("span", { class: "tier-val",  text: "≤ " + row.val.toFixed(2) + "s" })
+        el("span", { class: "tier-val", text: "<= " + row.val.toFixed(2) + "s" })
       ]);
       ladder.appendChild(li);
     });
     card.appendChild(ladder);
 
-    // Confidence label
-    var confLabel = b.confidence === "verified"
-      ? "Verified source benchmark"
-      : (b.confidence === "general" ? "General benchmark range" : "");
-    if (confLabel) {
-      card.appendChild(el("p", { class: "benchmark-confidence", text: confLabel }));
-    }
+    var confLabel = b.confidence === "verified" ? "Verified source benchmark" : (b.confidence === "general" ? "General benchmark range" : "");
+    if (confLabel) card.appendChild(el("p", { class: "benchmark-confidence", text: confLabel }));
 
-    // Notes / disclaimers
     if (b.notes) card.appendChild(el("p", { class: "muted small", text: b.notes }));
     card.appendChild(el("p", { class: "muted small", text: DISCLAIMERS.notPercentile }));
     card.appendChild(el("p", { class: "muted small", text: DISCLAIMERS.variability }));
 
-    // Source
-    var source = el("p", { class: "benchmark-source small" }, [
+    card.appendChild(el("p", { class: "benchmark-source small" }, [
       document.createTextNode("Source: "),
       el("a", { href: b.sourceUrl, rel: "noopener", target: "_blank" }, [b.sourceName])
-    ]);
-    card.appendChild(source);
+    ]));
 
     return card;
   }
 
-  /**
-   * Build the full result panel: confidence, splits table, speeds, sub-scores,
-   * warnings, and the benchmark card. Returns a DocumentFragment.
-   */
   function renderResults(input, result) {
     var frag = document.createDocumentFragment();
 
-    // Warnings
     if (result.warnings && result.warnings.length) {
       var w = el("div", { class: "warnings", role: "alert", "aria-live": "polite" });
       result.warnings.forEach(function (msg) { w.appendChild(el("p", { text: "Warning: " + msg })); });
       frag.appendChild(w);
     }
 
-    // Confidence card
     var confCard = el("section", { class: "card confidence-card", "aria-label": "Confidence rating" });
     confCard.appendChild(el("h3", { text: "Confidence rating" }));
     var confLevel = (result.confidence.level || "low").toLowerCase();
-    confCard.appendChild(el("p", { class: "conf-level conf-" + confLevel },
-      [el("strong", { text: confLevel.toUpperCase() })]));
+    confCard.appendChild(el("p", { class: "conf-level conf-" + confLevel }, [el("strong", { text: confLevel.toUpperCase() })]));
     confCard.appendChild(el("p", { class: "muted", text: result.confidence.explanation }));
     frag.appendChild(confCard);
 
-    // Splits / conversions table
+    var calc = window.SC.calculator;
+    var tableEstimates = result.displayEstimates || result.estimates;
     var splitsCard = el("section", { class: "card splits-card", "aria-label": "Estimated sprint conversions" });
     splitsCard.appendChild(el("h3", { text: "Estimated sprint conversions" }));
+    var adjText = adjustmentText(input, result);
+    if (adjText) splitsCard.appendChild(el("p", { class: "muted small", text: adjText }));
     splitsCard.appendChild(el("p", { class: "muted small",
-      text: "Lower times are faster. These are estimates, not official marks." }));
+      text: "Entered rows stay as entered. Other rows are estimates, not official marks. Lower times are faster." }));
+
     var table = el("table", { class: "splits-table" });
-    var thead = el("thead", {}, [
-      el("tr", {}, [el("th", { scope: "col", text: "Distance" }), el("th", { scope: "col", text: "Estimated time" })])
-    ]);
-    table.appendChild(thead);
+    table.appendChild(el("thead", {}, [
+      el("tr", {}, [el("th", { scope: "col", text: "Distance" }), el("th", { scope: "col", text: "Time" })])
+    ]));
     var tbody = el("tbody");
-    var calc = window.SC.calculator;
     calc.DISTANCES.forEach(function (d) {
-      var t = result.estimates[d.key];
-      var tr = el("tr", {}, [
-        el("td", { text: d.label }),
-        el("td", { text: t !== null && t !== undefined ? t.toFixed(2) + "s" : "—" })
-      ]);
-      tbody.appendChild(tr);
+      var t = tableEstimates[d.key];
+      tbody.appendChild(el("tr", {}, [
+        el("td", { text: distanceLabel(input, result, d) }),
+        el("td", { text: t !== null && t !== undefined ? t.toFixed(2) + "s" : "-" })
+      ]));
     });
     table.appendChild(tbody);
     splitsCard.appendChild(table);
     frag.appendChild(splitsCard);
 
-    // Speeds + sub-scores
     var perfCard = el("section", { class: "card perf-card", "aria-label": "Speed and performance scores" });
     perfCard.appendChild(el("h3", { text: "Speed and performance" }));
     var grid = el("div", { class: "perf-grid" });
@@ -160,21 +155,23 @@
       if (sub) b.appendChild(el("span", { class: "metric-sub muted small", text: sub }));
       return b;
     }
-    grid.appendChild(metricBlock("Average speed (mph)", String(result.speeds.avgMph), "Across the input distance"));
+
+    var topSpeedSub = result.maxSpeedApplied
+      ? "Measured or derived from your top-speed/flying input; used to shape longer estimates."
+      : "Estimated from the entered distance and time.";
+
+    grid.appendChild(metricBlock("Average speed (mph)", String(result.speeds.avgMph), "Across your entered distance and time"));
     grid.appendChild(metricBlock("Average speed (m/s)", String(result.speeds.avgMs)));
     grid.appendChild(metricBlock("Average speed (km/h)", String(result.speeds.avgKmh)));
-    grid.appendChild(metricBlock("Estimated top speed (mph)", String(result.speeds.topMph),
-      "Estimated peak from your inputs; not measured directly unless you entered it."));
-    grid.appendChild(metricBlock("Acceleration",     result.subScores.acceleration.tier,    "score " + result.subScores.acceleration.score));
-    grid.appendChild(metricBlock("Max velocity",     result.subScores.maxVelocity.tier,     "score " + result.subScores.maxVelocity.score));
-    grid.appendChild(metricBlock("Speed endurance",  result.subScores.speedEndurance.tier,  "score " + result.subScores.speedEndurance.score));
+    grid.appendChild(metricBlock("Estimated top speed (mph)", String(result.speeds.topMph), topSpeedSub));
+    grid.appendChild(metricBlock("Acceleration", result.subScores.acceleration.tier, "score " + result.subScores.acceleration.score));
+    grid.appendChild(metricBlock("Max velocity", result.subScores.maxVelocity.tier, "score " + result.subScores.maxVelocity.score));
+    grid.appendChild(metricBlock("Speed endurance", result.subScores.speedEndurance.tier, "score " + result.subScores.speedEndurance.score));
     perfCard.appendChild(grid);
     frag.appendChild(perfCard);
 
-    // Benchmark card
     frag.appendChild(renderBenchmarkCard(result));
 
-    // Action row
     var actions = el("section", { class: "card actions-card" });
     actions.appendChild(el("h3", { text: "Save or share" }));
     var btnRow = el("div", { class: "btn-row" });
@@ -191,7 +188,6 @@
     actions.appendChild(el("p", { class: "share-status muted small", "aria-live": "polite" }));
     frag.appendChild(actions);
 
-    // Disclaimer block (always visible under results)
     var dis = el("section", { class: "card disclaimer-card", "aria-label": "Disclaimer" });
     dis.appendChild(el("h3", { text: "Important disclaimer" }));
     dis.appendChild(el("p", { class: "small",
