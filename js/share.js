@@ -1,4 +1,4 @@
-/* Sprint Performance Calculator - Form, Copy & Share Helpers */
+/* SprintConvert - Form, copy and share helpers */
 (function () {
   "use strict";
 
@@ -61,7 +61,7 @@
   function buildResultText(input, result) {
     var lines = [];
     var tableEstimates = result.displayEstimates || result.estimates;
-    lines.push("Sprint Performance Calculator - estimate");
+    lines.push("SprintConvert - sprint estimate");
     lines.push("Input: " + input.distance + " in " + input.time + "s (" + input.timing + ", " + input.startType + " start)");
     if (result.adjustment && result.adjustment.applied && result.adjustment.enteredTime !== result.adjustment.normalizedTime) {
       lines.push("Entered time shown: " + result.adjustment.enteredTime.toFixed(2) + "s. Adjusted baseline used for other estimates: " + result.adjustment.normalizedTime.toFixed(2) + "s.");
@@ -87,7 +87,7 @@
       lines.push("Source: " + result.benchmark.match.sourceName);
     }
     lines.push("");
-    lines.push("These are estimates, not official marks. Source: Sprint Performance Calculator.");
+    lines.push("These are estimates, not official marks. Source: SprintConvert.");
     return lines.join("\n");
   }
 
@@ -191,6 +191,12 @@
     sync();
   }
 
+  function requiredFieldsAreReady(form) {
+    var distance = form.querySelector("[name='distance']");
+    var time = form.querySelector("[name='time']");
+    return !!(distance && distance.value && time && Number(time.value) > 0);
+  }
+
   function bootstrapCalculator(options) {
     options = options || {};
     var form = document.getElementById(options.formId || "sc-form");
@@ -208,8 +214,15 @@
 
     var lastInput = null;
     var lastResult = null;
+    var liveTimer = null;
+    var liveEnabled = options.live !== false;
 
-    form.addEventListener("submit", function (e) { e.preventDefault(); compute(); });
+    form.addEventListener("submit", function (e) { e.preventDefault(); compute({ scroll: true, showErrors: true }); });
+
+    if (liveEnabled) {
+      form.addEventListener("input", scheduleLiveCompute);
+      form.addEventListener("change", scheduleLiveCompute);
+    }
 
     form.addEventListener("reset", function () {
       setTimeout(function () {
@@ -235,25 +248,40 @@
           .catch(function () { if (status) status.textContent = "Could not copy. Select the text above to copy manually."; });
       } else if (t.getAttribute("data-sc-action") === "share") {
         copyResultsToClipboard(buildShareUrl(readForm(form)))
-          .then(function () { if (status) status.textContent = "Share link copied - paste it anywhere."; })
+          .then(function () { if (status) status.textContent = "Share link copied. Paste it anywhere."; })
           .catch(function () { if (status) status.textContent = "Could not copy share link."; });
       }
     });
 
-    function compute() {
+    function scheduleLiveCompute() {
+      if (!requiredFieldsAreReady(form)) return;
+      window.clearTimeout(liveTimer);
+      liveTimer = window.setTimeout(function () {
+        compute({ scroll: false, showErrors: false });
+      }, 140);
+    }
+
+    function renderValidationErrors(messages) {
+      var ul = document.createElement("ul");
+      messages.forEach(function (msg) {
+        var li = document.createElement("li");
+        li.textContent = msg;
+        ul.appendChild(li);
+      });
+      errors.appendChild(ul);
+      try { errors.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch (e) {}
+    }
+
+    function compute(runOptions) {
+      runOptions = runOptions || {};
+      var shouldScroll = runOptions.scroll !== false && options.scrollOnResult !== false;
+      var showErrors = runOptions.showErrors !== false;
       errors.innerHTML = "";
       var raw = readForm(form);
       var v = window.SC.validation.validate(raw);
       if (!v.valid) {
-        var ul = document.createElement("ul");
-        v.errors.forEach(function (msg) {
-          var li = document.createElement("li");
-          li.textContent = msg;
-          ul.appendChild(li);
-        });
-        errors.appendChild(ul);
-        try { errors.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch (e) {}
-        return;
+        if (showErrors) renderValidationErrors(v.errors);
+        return false;
       }
       try {
         var result = window.SC.calculator.estimate(v.normalized);
@@ -266,7 +294,7 @@
           var wrap = document.getElementById(options.revealId);
           if (wrap && wrap.hasAttribute("hidden")) wrap.removeAttribute("hidden");
         }
-        if (options.scrollOnResult !== false) {
+        if (shouldScroll) {
           var target = options.scrollTargetId ? document.getElementById(options.scrollTargetId) || results : results;
           var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
           requestAnimationFrame(function () {
@@ -274,12 +302,14 @@
             catch (e) { target.scrollIntoView(); }
           });
         }
+        return true;
       } catch (err) {
-        errors.textContent = "Something went wrong: " + (err && err.message ? err.message : "unknown error");
+        if (showErrors) errors.textContent = "Something went wrong: " + (err && err.message ? err.message : "unknown error");
+        return false;
       }
     }
 
-    if (hasUrl && urlState.distance && urlState.time) compute();
+    if (hasUrl && urlState.distance && urlState.time) compute({ scroll: false, showErrors: true });
   }
 
   if (typeof window !== "undefined") {
