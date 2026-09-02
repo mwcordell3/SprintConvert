@@ -2,100 +2,70 @@
  * -------------------------------------------------------
  * Conversion model:
  *   1) Normalize input to FAT, static-start equivalent.
- *   2) Scale to other distances using REF proportions.
- *      REF table is sex-specific. Male is the default; female is
- *      selected automatically when input.profile.sex === "female".
- *   3) If user provides a top speed (or flying segment), apply a
- *      max-speed-aware correction at long distances.
- *   4) Sub-score anchors are sex-specific so "Elite" means a fast
- *      female time when sex=female, not a slower-than-male time.
- *
- * Source notes for the female table:
- *   The female REF values are calibrated against publicly reported
- *   collegiate / national-team sprint test data. Sub-score anchors
- *   are calibrated so a female 100m of ~11.0 reads as Elite (matching
- *   an FAT mark that would put an athlete at the very top of the sport).
- *   These are reference proportions, not predictions of any individual.
+ *   2) Scale to other distances using sex-specific reference proportions.
+ *   3) Blend provided acceleration splits into the conversion curve.
+ *   4) Apply measured max-speed or flying-segment constraints to distances
+ *      where top-end speed actually matters.
  */
 (function () {
   "use strict";
 
   var YARD_M = 0.9144;
 
-  // Reference times for an "advanced" male athlete with FAT timing and a
-  // static start. Used for cross-distance scaling for male / unspecified.
   var REF_MALE = {
-    "10y":  1.65,
-    "20y":  2.70,
-    "30y":  3.65,
-    "30m":  3.95,
-    "40y":  4.70,
-    "60y":  6.55,
-    "60m":  7.10,
+    "10y": 1.65,
+    "20y": 2.70,
+    "30y": 3.65,
+    "30m": 3.95,
+    "40y": 4.70,
+    "60y": 6.55,
+    "60m": 7.10,
     "100m": 11.50,
     "200m": 23.50
   };
 
-  // Female reference table. Female sprint times at the "advanced collegiate"
-  // level run roughly 8–13% slower than male reference values across distances,
-  // with a slightly larger gap at longer distances because peak velocity
-  // differences compound over time.
-  // Calibrated to "advanced collegiate competitive" female sprinter:
-  // 100m around 12.20 FAT (national-meet level), 200m around 24.80.
-  // Source notes: women's 100m WR 10.49 (Griffith Joyner, 1988); women's
-  // 200m WR 21.34 (same); D1 outdoor 100m all-American is ~11.30-11.70;
-  // mid-tier D1 100m is ~12.00-12.40. The reference table sits at the
-  // upper-mid D1 range so "advanced" reads as nationally competitive,
-  // matching how the male table is calibrated.
   var REF_FEMALE = {
-    "10y":  1.78,
-    "20y":  2.95,
-    "30y":  3.95,
-    "30m":  4.25,
-    "40y":  5.10,
-    "60y":  7.10,
-    "60m":  7.65,
+    "10y": 1.78,
+    "20y": 2.95,
+    "30y": 3.95,
+    "30m": 4.25,
+    "40y": 5.10,
+    "60y": 7.10,
+    "60m": 7.65,
     "100m": 12.20,
     "200m": 24.80
   };
 
   function refFor(profile) {
-    if (profile && profile.sex === "female") return REF_FEMALE;
-    return REF_MALE;
+    return profile && profile.sex === "female" ? REF_FEMALE : REF_MALE;
   }
 
   var DISTANCES = [
-    { key: "10y",  label: "10 yards",   meters: 10  * YARD_M, kind: "yard" },
-    { key: "20y",  label: "20 yards",   meters: 20  * YARD_M, kind: "yard" },
-    { key: "30y",  label: "30 yards",   meters: 30  * YARD_M, kind: "yard" },
-    { key: "30m",  label: "30 meters",  meters: 30,           kind: "meter" },
-    { key: "40y",  label: "40 yards",   meters: 40  * YARD_M, kind: "yard" },
-    { key: "60y",  label: "60 yards",   meters: 60  * YARD_M, kind: "yard" },
-    { key: "60m",  label: "60 meters",  meters: 60,           kind: "meter" },
-    { key: "100m", label: "100 meters", meters: 100,          kind: "meter" },
-    { key: "200m", label: "200 meters", meters: 200,          kind: "meter" }
+    { key: "10y", label: "10 yards", meters: 10 * YARD_M, kind: "yard" },
+    { key: "20y", label: "20 yards", meters: 20 * YARD_M, kind: "yard" },
+    { key: "30y", label: "30 yards", meters: 30 * YARD_M, kind: "yard" },
+    { key: "30m", label: "30 meters", meters: 30, kind: "meter" },
+    { key: "40y", label: "40 yards", meters: 40 * YARD_M, kind: "yard" },
+    { key: "60y", label: "60 yards", meters: 60 * YARD_M, kind: "yard" },
+    { key: "60m", label: "60 meters", meters: 60, kind: "meter" },
+    { key: "100m", label: "100 meters", meters: 100, kind: "meter" },
+    { key: "200m", label: "200 meters", meters: 200, kind: "meter" }
   ];
   var DISTANCE_BY_KEY = {};
   DISTANCES.forEach(function (d) { DISTANCE_BY_KEY[d.key] = d; });
 
-  // Fraction of each distance spent near max velocity (rough physics model).
-  // Roughly equivalent for male and female: peak velocity occurs at similar
-  // PROPORTIONAL position in the run, even though absolute speeds differ.
   var FRAC_AT_MAX_SPEED = {
-    "10y":  0.00,
-    "20y":  0.10,
-    "30y":  0.25,
-    "30m":  0.30,
-    "40y":  0.40,
-    "60y":  0.55,
-    "60m":  0.60,
+    "10y": 0.00,
+    "20y": 0.10,
+    "30y": 0.25,
+    "30m": 0.30,
+    "40y": 0.40,
+    "60y": 0.55,
+    "60m": 0.60,
     "100m": 0.70,
     "200m": 0.62
   };
 
-  // Multipliers used to estimate top speed from average speed at the input
-  // distance. Female ratios are slightly closer to 1 because peak velocity
-  // is reached over a shorter relative distance.
   function topSpeedFactor(srcKey, profile) {
     var female = profile && profile.sex === "female";
     if (srcKey === "10y") return female ? 1.42 : 1.45;
@@ -108,32 +78,36 @@
   }
 
   var REALISTIC_BOUNDS = {
-    "10y":  { min: 1.20, max: 4.50 },
-    "20y":  { min: 2.00, max: 6.00 },
-    "30y":  { min: 2.80, max: 8.00 },
-    "30m":  { min: 3.00, max: 8.50 },
-    "40y":  { min: 3.80, max: 9.50 },
-    "60y":  { min: 5.50, max: 12.0 },
-    "60m":  { min: 6.00, max: 13.0 },
+    "10y": { min: 1.20, max: 4.50 },
+    "20y": { min: 2.00, max: 6.00 },
+    "30y": { min: 2.80, max: 8.00 },
+    "30m": { min: 3.00, max: 8.50 },
+    "40y": { min: 3.80, max: 9.50 },
+    "60y": { min: 5.50, max: 12.0 },
+    "60m": { min: 6.00, max: 13.0 },
     "100m": { min: 9.00, max: 22.0 },
     "200m": { min: 18.0, max: 45.0 }
   };
 
   var START_TYPES = [
-    { key: "block",    label: "Block start" },
-    { key: "3point",   label: "3-point start" },
+    { key: "block", label: "Block start" },
+    { key: "3point", label: "3-point start" },
     { key: "standing", label: "Standing start" },
-    { key: "rolling",  label: "Rolling start" },
-    { key: "flying",   label: "Flying start" }
+    { key: "rolling", label: "Rolling start" },
+    { key: "flying", label: "Flying start" }
   ];
   var START_ADJUST_TO_STATIC = {
-    block: 0.00, "3point": 0.00, standing: -0.08, rolling: 0.30, flying: 0.65
+    block: 0.00,
+    "3point": 0.00,
+    standing: -0.08,
+    rolling: 0.30,
+    flying: 0.65
   };
 
   var TIMING_METHODS = [
-    { key: "fat",   label: "Fully automatic timing (FAT)" },
+    { key: "fat", label: "Fully automatic timing (FAT)" },
     { key: "laser", label: "Laser timed" },
-    { key: "hand",  label: "Hand timed" },
+    { key: "hand", label: "Hand timed" },
     { key: "phone", label: "Phone video estimate" }
   ];
   var HAND_TIME_FAT_DELTA = 0.24;
@@ -144,20 +118,32 @@
     var p = Math.pow(10, digits || 2);
     return Math.round(v * p) / p;
   }
-  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
-  function mphFromMs(ms)  { return ms * 2.2369362921; }
-  function kmhFromMs(ms)  { return ms * 3.6; }
+  function clamp(v, lo, hi) {
+    return Math.max(lo, Math.min(hi, v));
+  }
+
+  function mphFromMs(ms) { return ms * 2.2369362921; }
+  function kmhFromMs(ms) { return ms * 3.6; }
   function msFromMph(mph) { return mph / 2.2369362921; }
 
   function normalizeTime(input) {
     var t = input.time;
     var timing = TIMING_ADJUST_TO_FAT[input.timing] || 0;
-    var start  = START_ADJUST_TO_STATIC[input.startType] || 0;
+    var start = START_ADJUST_TO_STATIC[input.startType] || 0;
     if (input.applyHandTimeAdjustment && input.timing !== "hand") {
       timing += HAND_TIME_FAT_DELTA;
     }
     return t + timing + start;
+  }
+
+  function normalizeAuxTime(time, input, startOverride) {
+    var timing = TIMING_ADJUST_TO_FAT[input.timing] || 0;
+    var start = START_ADJUST_TO_STATIC[startOverride || input.startType] || 0;
+    if (input.applyHandTimeAdjustment && input.timing !== "hand") {
+      timing += HAND_TIME_FAT_DELTA;
+    }
+    return time + timing + start;
   }
 
   function scaleByRef(timeNormSrc, srcKey, dstKey, ref) {
@@ -167,30 +153,87 @@
     return timeNormSrc * (refDst / refSrc);
   }
 
+  function distanceProximityWeight(anchorKey, dstKey) {
+    var a = DISTANCE_BY_KEY[anchorKey].meters;
+    var d = DISTANCE_BY_KEY[dstKey].meters;
+    return 1 / (1 + Math.abs(Math.log(d / a)) * 0.85);
+  }
+
   function applyMaxSpeedCorrection(baselineTime, dstKey, speedRatio) {
     var frac = FRAC_AT_MAX_SPEED[dstKey];
     if (frac === undefined) frac = 0.5;
     return baselineTime * (1 - frac + frac / speedRatio);
   }
 
+  function measuredTopSpeed(input) {
+    if (input.topSpeed && input.topSpeed > 0) {
+      return { ms: input.topSpeed, source: "topSpeed" };
+    }
+    if (input.flying20m && input.flying20m > 0) {
+      return { ms: 20 / input.flying20m, source: "flying20m" };
+    }
+    if (input.flying10m && input.flying10m > 0) {
+      return { ms: 10 / input.flying10m, source: "flying10m" };
+    }
+    return null;
+  }
+
   function estimateTopSpeed(input, normalizedTime, srcKey, profile) {
-    if (input.flying20m && input.flying20m > 0) return 20 / input.flying20m;
-    if (input.flying10m && input.flying10m > 0) return 10 / input.flying10m;
-    if (input.topSpeed && input.topSpeed > 0)   return input.topSpeed;
+    var measured = measuredTopSpeed(input);
+    if (measured) return measured.ms;
     var meters = DISTANCE_BY_KEY[srcKey].meters;
     var avgV = meters / normalizedTime;
     return avgV * topSpeedFactor(srcKey, profile);
   }
 
-  // Sub-score anchors (developing time -> elite time, lower is faster).
-  // Sex-specific so an Elite female score reflects elite female performance.
+  function addAnchor(list, key, normalizedTime, weight) {
+    if (!normalizedTime || normalizedTime <= 0 || !DISTANCE_BY_KEY[key]) return;
+    list.push({ key: key, time: normalizedTime, weight: weight });
+  }
+
+  function buildAnchors(input, srcKey, normT, warnings) {
+    var anchors = [{ key: srcKey, time: normT, weight: 1.0, primary: true }];
+
+    function warnIfImpossible(label, splitTime, splitKey) {
+      if (splitTime && DISTANCE_BY_KEY[splitKey].meters < DISTANCE_BY_KEY[srcKey].meters && splitTime >= input.time) {
+        warnings.push(label + " is not faster than the full sprint time, so it may have been entered as a segment instead of a cumulative split.");
+      }
+    }
+
+    if (input.split10y) {
+      warnIfImpossible("10-yard split", input.split10y, "10y");
+      addAnchor(anchors, "10y", normalizeAuxTime(input.split10y, input), 0.42);
+    }
+    if (input.split20y) {
+      warnIfImpossible("20-yard split", input.split20y, "20y");
+      addAnchor(anchors, "20y", normalizeAuxTime(input.split20y, input), 0.50);
+    }
+    if (input.block30m) {
+      warnIfImpossible("30m block time", input.block30m, "30m");
+      addAnchor(anchors, "30m", normalizeAuxTime(input.block30m, input, "block"), 0.56);
+    }
+    return anchors;
+  }
+
+  function blendedEstimate(anchors, dstKey, ref) {
+    var total = 0;
+    var weight = 0;
+    anchors.forEach(function (anchor) {
+      var projected = anchor.key === dstKey ? anchor.time : scaleByRef(anchor.time, anchor.key, dstKey, ref);
+      if (projected === null || projected === undefined || isNaN(projected)) return;
+      var w = anchor.primary ? anchor.weight : anchor.weight * distanceProximityWeight(anchor.key, dstKey);
+      total += projected * w;
+      weight += w;
+    });
+    return weight ? total / weight : null;
+  }
+
   function subScoreAnchors(profile) {
     var female = profile && profile.sex === "female";
     return {
-      // [developing, elite] - lower time / higher speed = better
       accel10y: female ? [2.10, 1.65] : [1.95, 1.45],
-      maxV:     female ? [6.8, 10.7]  : [7.0, 11.5],   // m/s; FloJo peak ~10.7
-      end200m:  female ? [28.0, 21.5] : [28.0, 20.0]
+      maxV: female ? [6.8, 10.7] : [7.0, 11.5],
+      end200m: female ? [28.0, 21.5] : [28.0, 20.0]
     };
   }
 
@@ -200,52 +243,42 @@
       var raw = 25 + (lo - t) * (70 / (lo - hi));
       return Math.round(clamp(raw, 5, 99));
     }
-    var accel = lerp(estimates["10y"], A.accel10y[0], A.accel10y[1]);
-    var maxVel = topSpeedMs ? lerp(topSpeedMs, A.maxV[0], A.maxV[1])
-                             : lerp(estimates["100m"], A.end200m[0] * 0.48, A.end200m[1] * 0.50);
-    var endurance = lerp(estimates["200m"], A.end200m[0], A.end200m[1]);
     function tierFromScore(s) {
       if (s >= 90) return "Elite";
       if (s >= 75) return "Advanced";
       if (s >= 55) return "Competitive";
       return "Developing";
     }
+    var accel = lerp(estimates["10y"], A.accel10y[0], A.accel10y[1]);
+    var maxVel = topSpeedMs ? lerp(topSpeedMs, A.maxV[0], A.maxV[1]) : lerp(estimates["100m"], A.end200m[0] * 0.48, A.end200m[1] * 0.50);
+    var endurance = lerp(estimates["200m"], A.end200m[0], A.end200m[1]);
     return {
-      acceleration:   { score: accel,     tier: tierFromScore(accel) },
-      maxVelocity:    { score: maxVel,    tier: tierFromScore(maxVel) },
+      acceleration: { score: accel, tier: tierFromScore(accel) },
+      maxVelocity: { score: maxVel, tier: tierFromScore(maxVel) },
       speedEndurance: { score: endurance, tier: tierFromScore(endurance) }
     };
   }
 
   function computeConfidence(input) {
-    var hasSplit = !!(input.split10y || input.split20y || input.flying10m ||
-                      input.flying20m || input.block30m);
+    var hasSplit = !!(input.split10y || input.split20y || input.flying10m || input.flying20m || input.block30m);
     var hasTopSpeed = !!(input.topSpeed || input.flying10m || input.flying20m);
-    var movingStart = (input.startType === "rolling" || input.startType === "flying");
-    var weakTiming  = (input.timing === "hand" || input.timing === "phone");
+    var movingStart = input.startType === "rolling" || input.startType === "flying";
+    var weakTiming = input.timing === "hand" || input.timing === "phone";
 
-    if (input.timing === "phone") return rate("low",
-      "Phone video estimates have high frame-rate uncertainty and start-detection error.");
-    if (movingStart && !hasSplit && !hasTopSpeed) return rate("low",
-      "Rolling/flying starts skip the acceleration phase, so short-distance estimates are rough.");
-    if (weakTiming && !hasSplit && !hasTopSpeed) return rate("low",
-      "Hand-timed entries can be 0.20-0.30 seconds faster than FAT and add uncertainty.");
-    if (!hasSplit && !hasTopSpeed) return rate("medium",
-      "One reasonable timed run with FAT/laser timing - adequate for a single estimate, but no cross-checks.");
-    if ((hasSplit && hasTopSpeed) && !weakTiming && !movingStart) return rate("high",
-      "FAT/laser timing plus splits and top speed lets us cross-check the acceleration and max-velocity phases.");
-    return rate("medium",
-      "Some additional split or top-speed data is provided, which improves the estimate beyond a single time.");
+    if (input.timing === "phone") return rate("low", "Phone video estimates have high frame-rate uncertainty and start-detection error.");
+    if (movingStart && !hasSplit && !hasTopSpeed) return rate("low", "Rolling/flying starts skip the acceleration phase, so short-distance estimates are rough.");
+    if (weakTiming && !hasSplit && !hasTopSpeed) return rate("low", "Hand-timed entries can be 0.20-0.30 seconds faster than FAT and add uncertainty.");
+    if (!hasSplit && !hasTopSpeed) return rate("medium", "One reasonable timed run with FAT/laser timing - adequate for a single estimate, but no cross-checks.");
+    if ((hasSplit && hasTopSpeed) && !weakTiming && !movingStart) return rate("high", "Timing plus splits and top speed lets us cross-check acceleration and max-velocity phases.");
+    return rate("medium", "Additional split or top-speed data is shaping this estimate beyond a single time.");
+
     function rate(level, why) { return { level: level, explanation: why }; }
   }
 
   function findBenchmark(profile, distanceKey) {
     var list = (typeof window !== "undefined" && window.SC_BENCHMARKS) || [];
     if (!profile || !distanceKey) return null;
-    var distStr = distanceKey === "60y" ? "60yd"
-                 : distanceKey === "40y" ? "40yd"
-                 : distanceKey === "30m" ? "30m"
-                 : distanceKey;
+    var distStr = distanceKey === "60y" ? "60yd" : distanceKey === "40y" ? "40yd" : distanceKey === "30m" ? "30m" : distanceKey;
     if (profile.sport === "soccer" && (distanceKey === "30y" || distanceKey === "30m")) distStr = "30m";
     for (var i = 0; i < list.length; i++) {
       var b = list[i];
@@ -260,10 +293,10 @@
 
   function tierFromBenchmark(time, b) {
     if (!b || time === null || time === undefined || isNaN(time)) return null;
-    if (time <= b.elite)        return "Elite";
-    if (time <= b.advanced)     return "Advanced";
-    if (time <= b.competitive)  return "Competitive";
-    if (time <= b.developing)   return "Developing";
+    if (time <= b.elite) return "Elite";
+    if (time <= b.advanced) return "Advanced";
+    if (time <= b.competitive) return "Competitive";
+    if (time <= b.developing) return "Developing";
     return "Below listed range";
   }
 
@@ -277,43 +310,36 @@
     }
     var bounds = REALISTIC_BOUNDS[input.distance];
     if (bounds && (input.time < bounds.min || input.time > bounds.max)) {
-      warnings.push("That time is outside typical " + DISTANCE_BY_KEY[input.distance].label +
-        " range (" + bounds.min + "s - " + bounds.max + "s). Estimates may be unreliable.");
+      warnings.push("That time is outside typical " + DISTANCE_BY_KEY[input.distance].label + " range (" + bounds.min + "s - " + bounds.max + "s). Estimates may be unreliable.");
     }
 
     var profile = input.profile || null;
     var ref = refFor(profile);
     var srcKey = input.distance;
-    var normT  = normalizeTime(input);
-
+    var normT = normalizeTime(input);
     var srcMeters = DISTANCE_BY_KEY[srcKey].meters;
     var srcAvgV = srcMeters / normT;
     var impliedMaxV = srcAvgV * topSpeedFactor(srcKey, profile);
-    var hasUserMax = !!(input.topSpeed && input.topSpeed > 0);
+    var measured = measuredTopSpeed(input);
     var speedRatio = 1;
     var conflict = false;
 
-    if (hasUserMax) {
-      if (srcAvgV > input.topSpeed * 1.02) {
+    if (measured) {
+      if (srcAvgV > measured.ms * 1.02) {
         conflict = true;
-        warnings.push("Your top speed input conflicts with your sprint time. The estimate may be unreliable. Check whether the speed reading is peak speed, average speed, speed at a marker, or from a different run.");
+        warnings.push("Your top-speed or flying-segment input conflicts with your sprint time. Check units, timing gates, and whether the readings came from the same run.");
       }
-      speedRatio = input.topSpeed / impliedMaxV;
-      speedRatio = clamp(speedRatio, 0.70, 1.60);
+      speedRatio = clamp(measured.ms / impliedMaxV, 0.70, 1.60);
     }
 
+    var anchors = buildAnchors(input, srcKey, normT, warnings);
     var estimates = {};
     DISTANCES.forEach(function (d) {
-      var t;
-      if (d.key === srcKey) {
-        t = normT;
-      } else {
-        t = scaleByRef(normT, srcKey, d.key, ref);
-        if (hasUserMax) {
-          t = applyMaxSpeedCorrection(t, d.key, speedRatio);
-          var floor = DISTANCE_BY_KEY[d.key].meters / input.topSpeed;
-          if (t < floor) t = floor;
-        }
+      var t = d.key === srcKey ? normT : blendedEstimate(anchors, d.key, ref);
+      if (measured && d.key !== srcKey) {
+        t = applyMaxSpeedCorrection(t, d.key, speedRatio);
+        var speedFloor = DISTANCE_BY_KEY[d.key].meters / measured.ms;
+        if (t < speedFloor) t = speedFloor;
       }
       estimates[d.key] = round(t, 2);
     });
@@ -321,47 +347,42 @@
     var avgMs = srcMeters / normT;
     var topMs = estimateTopSpeed(input, normT, srcKey, profile);
     var speeds = {
-      avgMs:  round(avgMs, 2),
+      avgMs: round(avgMs, 2),
       avgMph: round(mphFromMs(avgMs), 2),
       avgKmh: round(kmhFromMs(avgMs), 2),
-      topMs:  round(topMs, 2),
+      topMs: round(topMs, 2),
       topMph: round(mphFromMs(topMs), 2),
       topKmh: round(kmhFromMs(topMs), 2)
     };
 
-    var subScores = computeSubScores(estimates, topMs, profile);
-    var confidence = computeConfidence(input);
-
     var benchmark = null;
     if (profile && profile.sport && profile.sport !== "general athlete") {
-      var bDist = (profile.sport === "baseball") ? "60y"
-                 : (profile.sport === "soccer") ? (srcKey === "30m" ? "30m" : "30y")
-                 : (profile.sport === "football") ? "40y"
-                 : srcKey;
+      var bDist = profile.sport === "baseball" ? "60y" : profile.sport === "soccer" ? (srcKey === "30m" ? "30m" : "30y") : profile.sport === "football" ? "40y" : srcKey;
       var bMatch = findBenchmark(profile, bDist);
       if (bMatch) {
         var compareTime = estimates[bDist];
         if (compareTime === null || compareTime === undefined) {
           compareTime = round(scaleByRef(normT, srcKey, bDist, ref), 2);
         }
-        var tier = tierFromBenchmark(compareTime, bMatch);
-        benchmark = { match: bMatch, comparedDistance: bDist, comparedTime: compareTime, tier: tier };
+        benchmark = { match: bMatch, comparedDistance: bDist, comparedTime: compareTime, tier: tierFromBenchmark(compareTime, bMatch) };
       }
     }
 
     return {
       estimates: estimates,
       speeds: speeds,
-      subScores: subScores,
-      confidence: confidence,
+      subScores: computeSubScores(estimates, topMs, profile),
+      confidence: computeConfidence(input),
       benchmark: benchmark,
       warnings: warnings,
       normalizedTime: round(normT, 2),
       srcKey: srcKey,
-      maxSpeedApplied: hasUserMax,
-      speedRatioUsed: hasUserMax ? round(speedRatio, 3) : null,
+      maxSpeedApplied: !!measured,
+      maxSpeedSource: measured ? measured.source : null,
+      speedRatioUsed: measured ? round(speedRatio, 3) : null,
+      splitAnchorsUsed: anchors.filter(function (a) { return !a.primary; }).map(function (a) { return a.key; }),
       conflict: conflict,
-      sexUsed: (profile && profile.sex === "female") ? "female" : "male"
+      sexUsed: profile && profile.sex === "female" ? "female" : "male"
     };
   }
 
