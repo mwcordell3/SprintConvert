@@ -1,10 +1,11 @@
 /* Sprint Performance Calculator - Core Engine
  * -------------------------------------------------------
  * Conversion model:
- *   1) Normalize input to FAT, static-start equivalent.
- *   2) Scale to other distances using sex-specific reference proportions.
- *   3) Blend provided acceleration splits into the conversion curve.
- *   4) Apply measured max-speed or flying-segment constraints to distances
+ *   1) Keep the user's entered measurements visible as entered.
+ *   2) Normalize input internally to a FAT, static-start baseline.
+ *   3) Scale to other distances using sex-specific reference proportions.
+ *   4) Blend provided acceleration splits into the conversion curve.
+ *   5) Apply measured max-speed or flying-segment constraints to distances
  *      where top-end speed actually matters.
  */
 (function () {
@@ -131,18 +132,14 @@
     var t = input.time;
     var timing = TIMING_ADJUST_TO_FAT[input.timing] || 0;
     var start = START_ADJUST_TO_STATIC[input.startType] || 0;
-    if (input.applyHandTimeAdjustment && input.timing !== "hand") {
-      timing += HAND_TIME_FAT_DELTA;
-    }
+    if (input.applyHandTimeAdjustment && input.timing !== "hand") timing += HAND_TIME_FAT_DELTA;
     return t + timing + start;
   }
 
   function normalizeAuxTime(time, input, startOverride) {
     var timing = TIMING_ADJUST_TO_FAT[input.timing] || 0;
     var start = START_ADJUST_TO_STATIC[startOverride || input.startType] || 0;
-    if (input.applyHandTimeAdjustment && input.timing !== "hand") {
-      timing += HAND_TIME_FAT_DELTA;
-    }
+    if (input.applyHandTimeAdjustment && input.timing !== "hand") timing += HAND_TIME_FAT_DELTA;
     return time + timing + start;
   }
 
@@ -166,23 +163,17 @@
   }
 
   function measuredTopSpeed(input) {
-    if (input.topSpeed && input.topSpeed > 0) {
-      return { ms: input.topSpeed, source: "topSpeed" };
-    }
-    if (input.flying20m && input.flying20m > 0) {
-      return { ms: 20 / input.flying20m, source: "flying20m" };
-    }
-    if (input.flying10m && input.flying10m > 0) {
-      return { ms: 10 / input.flying10m, source: "flying10m" };
-    }
+    if (input.topSpeed && input.topSpeed > 0) return { ms: input.topSpeed, source: "topSpeed" };
+    if (input.flying20m && input.flying20m > 0) return { ms: 20 / input.flying20m, source: "flying20m" };
+    if (input.flying10m && input.flying10m > 0) return { ms: 10 / input.flying10m, source: "flying10m" };
     return null;
   }
 
-  function estimateTopSpeed(input, normalizedTime, srcKey, profile) {
+  function estimateTopSpeed(input, observedTime, srcKey, profile) {
     var measured = measuredTopSpeed(input);
     if (measured) return measured.ms;
     var meters = DISTANCE_BY_KEY[srcKey].meters;
-    var avgV = meters / normalizedTime;
+    var avgV = meters / observedTime;
     return avgV * topSpeedFactor(srcKey, profile);
   }
 
@@ -226,6 +217,31 @@
       weight += w;
     });
     return weight ? total / weight : null;
+  }
+
+  function buildDisplayEstimates(input, internalEstimates, srcKey) {
+    var out = {};
+    Object.keys(internalEstimates).forEach(function (key) { out[key] = internalEstimates[key]; });
+    out[srcKey] = round(input.time, 2);
+    if (input.split10y) out["10y"] = round(input.split10y, 2);
+    if (input.split20y) out["20y"] = round(input.split20y, 2);
+    if (input.block30m) out["30m"] = round(input.block30m, 2);
+    return out;
+  }
+
+  function adjustmentSummary(input, normT) {
+    var notes = [];
+    var timing = TIMING_ADJUST_TO_FAT[input.timing] || 0;
+    var start = START_ADJUST_TO_STATIC[input.startType] || 0;
+    if (input.applyHandTimeAdjustment && input.timing !== "hand") timing += HAND_TIME_FAT_DELTA;
+    if (timing) notes.push({ type: "timing", seconds: round(timing, 2) });
+    if (start) notes.push({ type: "start", seconds: round(start, 2) });
+    return {
+      applied: notes.length > 0,
+      enteredTime: round(input.time, 2),
+      normalizedTime: round(normT, 2),
+      notes: notes
+    };
   }
 
   function subScoreAnchors(profile) {
@@ -302,12 +318,9 @@
 
   function estimate(input) {
     var warnings = [];
-    if (!input || !input.distance || !DISTANCE_BY_KEY[input.distance]) {
-      throw new Error("Unknown or missing distance");
-    }
-    if (!isFinite(input.time) || input.time <= 0) {
-      throw new Error("Time must be a positive number of seconds");
-    }
+    if (!input || !input.distance || !DISTANCE_BY_KEY[input.distance]) throw new Error("Unknown or missing distance");
+    if (!isFinite(input.time) || input.time <= 0) throw new Error("Time must be a positive number of seconds");
+
     var bounds = REALISTIC_BOUNDS[input.distance];
     if (bounds && (input.time < bounds.min || input.time > bounds.max)) {
       warnings.push("That time is outside typical " + DISTANCE_BY_KEY[input.distance].label + " range (" + bounds.min + "s - " + bounds.max + "s). Estimates may be unreliable.");
@@ -318,14 +331,14 @@
     var srcKey = input.distance;
     var normT = normalizeTime(input);
     var srcMeters = DISTANCE_BY_KEY[srcKey].meters;
-    var srcAvgV = srcMeters / normT;
-    var impliedMaxV = srcAvgV * topSpeedFactor(srcKey, profile);
+    var observedAvgV = srcMeters / input.time;
+    var impliedMaxV = observedAvgV * topSpeedFactor(srcKey, profile);
     var measured = measuredTopSpeed(input);
     var speedRatio = 1;
     var conflict = false;
 
     if (measured) {
-      if (srcAvgV > measured.ms * 1.02) {
+      if (observedAvgV > measured.ms * 1.02) {
         conflict = true;
         warnings.push("Your top-speed or flying-segment input conflicts with your sprint time. Check units, timing gates, and whether the readings came from the same run.");
       }
@@ -344,12 +357,12 @@
       estimates[d.key] = round(t, 2);
     });
 
-    var avgMs = srcMeters / normT;
-    var topMs = estimateTopSpeed(input, normT, srcKey, profile);
+    var topMs = estimateTopSpeed(input, input.time, srcKey, profile);
+    var displayEstimates = buildDisplayEstimates(input, estimates, srcKey);
     var speeds = {
-      avgMs: round(avgMs, 2),
-      avgMph: round(mphFromMs(avgMs), 2),
-      avgKmh: round(kmhFromMs(avgMs), 2),
+      avgMs: round(observedAvgV, 2),
+      avgMph: round(mphFromMs(observedAvgV), 2),
+      avgKmh: round(kmhFromMs(observedAvgV), 2),
       topMs: round(topMs, 2),
       topMph: round(mphFromMs(topMs), 2),
       topKmh: round(kmhFromMs(topMs), 2)
@@ -360,22 +373,23 @@
       var bDist = profile.sport === "baseball" ? "60y" : profile.sport === "soccer" ? (srcKey === "30m" ? "30m" : "30y") : profile.sport === "football" ? "40y" : srcKey;
       var bMatch = findBenchmark(profile, bDist);
       if (bMatch) {
-        var compareTime = estimates[bDist];
-        if (compareTime === null || compareTime === undefined) {
-          compareTime = round(scaleByRef(normT, srcKey, bDist, ref), 2);
-        }
+        var compareTime = displayEstimates[bDist];
+        if (compareTime === null || compareTime === undefined) compareTime = round(scaleByRef(normT, srcKey, bDist, ref), 2);
         benchmark = { match: bMatch, comparedDistance: bDist, comparedTime: compareTime, tier: tierFromBenchmark(compareTime, bMatch) };
       }
     }
 
     return {
       estimates: estimates,
+      displayEstimates: displayEstimates,
       speeds: speeds,
       subScores: computeSubScores(estimates, topMs, profile),
       confidence: computeConfidence(input),
       benchmark: benchmark,
       warnings: warnings,
       normalizedTime: round(normT, 2),
+      enteredTime: round(input.time, 2),
+      adjustment: adjustmentSummary(input, normT),
       srcKey: srcKey,
       maxSpeedApplied: !!measured,
       maxSpeedSource: measured ? measured.source : null,
@@ -409,7 +423,5 @@
     window.SC = window.SC || {};
     window.SC.calculator = api;
   }
-  if (typeof module !== "undefined" && module.exports) {
-    module.exports = api;
-  }
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
 })();
