@@ -6,7 +6,7 @@
 <title>SprintConvert 40 Yard Dash Calculator | Convert 40 to 100m & MPH</title>
 <meta name="description" content="Free 40-yard dash calculator for football speed, 10-yard splits, top speed, 100m conversion, sprint speed in mph, and broad performance tiers.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/40-yard-dash-calculator.html">
-<link rel="stylesheet" href="css/styles.css?v=20260902c">
+<link rel="stylesheet" href="css/styles.css?v=20260903a">
 <meta name="theme-color" content="#f7f8f5">
 <meta property="og:type" content="website">
 <meta property="og:title" content="SprintConvert 40 Yard Dash Calculator | Convert 40 to 100m & MPH">
@@ -19,7 +19,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"SprintConvert 40 Yard Dash Calculator","applicationCategory":"SportsApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":"https://mwcordell3.github.io/SprintConvert/40-yard-dash-calculator.html","description":"Estimate 40-yard dash time, speed in mph, 10-yard and 20-yard splits, top speed, 100m conversion, and broad football performance tiers.","featureList":["40-yard dash conversion","10-yard split support","20-yard split support","Measured top-speed input","100m projection","Hand time to FAT estimate","Benchmark comparison"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"},{"@type":"ListItem","position":2,"name":"40 Yard Dash Calculator","item":"https://mwcordell3.github.io/SprintConvert/40-yard-dash-calculator.html"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is a 4.5 forty good?","acceptedAnswer":{"@type":"Answer","text":"A 4.50 hand-timed 40 is typically slower than a 4.50 fully automatic time because hand stopwatches start later. Either way, a 4.50 is in the elite range of the general high-school and college football benchmark. Treat the tier as broad guidance, not an exact percentile."}},{"@type":"Question","name":"How does SprintConvert estimate my 100m time from a 40?","acceptedAnswer":{"@type":"Answer","text":"It uses a normalized 40-yard baseline and non-linear sprint proportions. Short sprints are acceleration-heavy, while 100m performance depends more on max velocity and speed endurance. Optional splits and measured top speed help shape the projection."}},{"@type":"Question","name":"Should I use the hand-time adjustment?","acceptedAnswer":{"@type":"Answer","text":"Use it when a person recorded the time with a stopwatch and you want a rough fully automatic timing equivalent. The +0.24-second adjustment is an estimate, not an official correction."}},{"@type":"Question","name":"Why does the result include a confidence rating?","acceptedAnswer":{"@type":"Answer","text":"Sprint conversions get more reliable with better inputs. FAT or laser timing, measured top speed, and 10-yard or 20-yard splits improve confidence. Hand timing, phone timing, rolling starts, or very long extrapolations reduce confidence."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is a 4.5 forty good?","acceptedAnswer":{"@type":"Answer","text":"A 4.50 hand-timed 40 is typically slower than a 4.50 fully automatic time because hand stopwatches start later. Either way, a 4.50 is in the elite range of the general high-school and college football benchmark. Treat the tier as broad guidance, not an exact percentile."}},{"@type":"Question","name":"How does SprintConvert estimate my 100m time from a 40?","acceptedAnswer":{"@type":"Answer","text":"It uses a normalized 40-yard baseline and non-linear sprint proportions. Short sprints are acceleration-heavy, while 100m performance depends more on max velocity and speed endurance. Optional splits and measured top speed help shape the projection."}},{"@type":"Question","name":"Should I use the hand-time adjustment?","acceptedAnswer":{"@type":"Answer","text":"Use it when a person recorded the time with a stopwatch and you want a rough fully automatic timing equivalent. The +0.24-second adjustment is an estimate, not an official correction."}},{"@type":"Question","name":"Why should I add splits or top speed?","acceptedAnswer":{"@type":"Answer","text":"Sprint conversions get more useful with better inputs. A measured top speed and 10-yard or 20-yard splits help separate acceleration from max velocity, so the estimate is less generic."}}]}</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -44,7 +44,7 @@
     <div class="hero-copy">
       <p class="eyebrow">Football speed calculator</p>
       <h1>40 Yard Dash Calculator</h1>
-      <p class="lead">Convert a 40-yard dash into sprint speed, 10-yard and 20-yard splits, estimated 100m and 200m times, top speed, confidence, and a broad football performance tier.</p>
+      <p class="lead">Convert a 40-yard dash into sprint speed, 10-yard and 20-yard splits, estimated 100m and 200m times, top speed, and a broad football performance tier.</p>
       <div class="trust-row" aria-label="Trust and privacy notes">
         <span>Entered 40 stays visible</span>
         <span>Top speed changes estimates</span>
@@ -81,13 +81,13 @@
 </section>
 
 <section class="container calculator-shell" id="calculator">
-  <div class="calc-layout">
+  <div class="calc-layout" style="grid-template-columns:minmax(0,1fr);max-width:980px;margin:0 auto;">
     <div>
       <p class="muted small" style="margin:0 0 var(--space-3) 0;">Enter distance and time and the report updates automatically. Estimates only, not official combine marks.</p>
       <div id="sc-errors" role="alert" aria-live="assertive"></div>
       <h2 class="visually-hidden">40-yard dash calculator</h2>
       <form id="sc-form" class="card calc-card" novalidate aria-describedby="sc-form-help">
-        <p id="sc-form-help" class="muted small" style="margin-bottom: var(--space-4);">Start with your actual 40-yard time. Optional splits and top speed improve confidence.</p>
+        <p id="sc-form-help" class="muted small" style="margin-bottom: var(--space-4);">Start with your actual 40-yard time. Optional splits and top speed make the projection more specific.</p>
 
         <section class="form-section" aria-labelledby="sec-input">
           <h3 id="sec-input">Sprint input</h3>
@@ -191,22 +191,6 @@
         </div>
       </form>
     </div>
-
-    <aside class="report-sidebar" aria-label="40-yard report features">
-      <p class="eyebrow">40-yard report</p>
-      <h2>What you get back</h2>
-      <div class="side-meter" aria-label="40-yard output summary">
-        <div><span>Main output</span><strong>40 + 100m</strong></div>
-        <div><span>Best add-on</span><strong>10yd split</strong></div>
-        <div><span>Speed output</span><strong>mph + m/s</strong></div>
-      </div>
-      <ul>
-        <li>Entered 40-yard time stays labeled as entered.</li>
-        <li>Measured top speed shapes longer estimates.</li>
-        <li>Splits help separate acceleration from max velocity.</li>
-        <li>Confidence explains how much weight to give the result.</li>
-      </ul>
-    </aside>
   </div>
 </section>
 
@@ -268,8 +252,8 @@
     <p>Use it if your time was recorded by a person with a stopwatch and you want a rough fully automatic timing equivalent. The +0.24-second adjustment is an estimate, not an official correction.</p>
   </details>
   <details>
-    <summary>Why does the result include a confidence rating?</summary>
-    <p>Sprint conversions get more reliable with better inputs. FAT or laser timing, measured top speed, and 10-yard or 20-yard splits improve confidence. Hand timing, phone timing, rolling starts, or very long extrapolations reduce confidence.</p>
+    <summary>Why should I add splits or top speed?</summary>
+    <p>A measured top speed and 10-yard or 20-yard splits help separate acceleration from max velocity, so the estimate is less generic and easier to sanity-check.</p>
   </details>
 </section>
 
@@ -307,11 +291,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js?v=20260902c" defer></script>
-<script src="js/calculator.js?v=20260902c" defer></script>
-<script src="js/validation.js?v=20260902c" defer></script>
-<script src="js/benchmarks.js?v=20260902c" defer></script>
-<script src="js/share.js?v=20260902c" defer></script>
+<script src="data/benchmarks.js?v=20260903a" defer></script>
+<script src="js/calculator.js?v=20260903a" defer></script>
+<script src="js/validation.js?v=20260903a" defer></script>
+<script src="js/benchmarks.js?v=20260903a" defer></script>
+<script src="js/share.js?v=20260903a" defer></script>
 <script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({"defaults":{"distance":"40y","timing":"fat","startType":"3point","topSpeedUnit":"mph","sport":"football"},"revealId":"sc-results-section","scrollTargetId":"sc-results","scrollOnResult":true,"live":true});});</script>
 </body>
 </html>
