@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SprintConvert | 40 Yard Dash, 100m & Sprint Speed Calculator</title>
-<meta name="description" content="Use SprintConvert to convert 40-yard dash, 100m, 60m, 200m, flying splits, top speed, and sprint speed in mph. Free calculator with confidence rating and benchmarks.">
+<meta name="description" content="Use SprintConvert to convert 40-yard dash, 100m, 60m, 200m, flying splits, top speed, and sprint speed in mph. Free calculator with clear estimates and benchmarks.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/">
-<link rel="stylesheet" href="css/styles.css?v=20260902c">
+<link rel="stylesheet" href="css/styles.css?v=20260903a">
 <meta name="theme-color" content="#f7f8f5">
 <meta property="og:type" content="website">
 <meta property="og:title" content="SprintConvert | 40 Yard Dash, 100m & Sprint Speed Calculator">
@@ -24,7 +24,7 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mwcordell3.github.io/SprintConvert/"}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate is the sprint time calculator?","acceptedAnswer":{"@type":"Answer","text":"It returns estimates, not official marks. Sprint performance is not linear, and timing method, start type, surface, and conditions all change real results. The confidence rating tells you how strong the estimate is for your inputs."}},{"@type":"Question","name":"What is the difference between hand time and FAT?","acceptedAnswer":{"@type":"Answer","text":"Hand-timed runs are typically 0.20 to 0.30 seconds faster than fully automatic timing. The calculator can apply a +0.24-second adjustment to estimate a FAT equivalent for track-style hand times."}},{"@type":"Question","name":"Why does start type matter?","acceptedAnswer":{"@type":"Answer","text":"Block, 3-point, and standing starts all begin from rest. Rolling and flying starts skip the acceleration phase, so a flying 40 will look much faster than the same effort from a standing or 3-point start."}},{"@type":"Question","name":"Are the benchmarks an exact percentile?","acceptedAnswer":{"@type":"Answer","text":"No. Benchmarks are general performance ranges drawn from cited sources. They are useful as broad guidance but should not be treated as percentile rankings."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate is the sprint time calculator?","acceptedAnswer":{"@type":"Answer","text":"It returns estimates, not official marks. Sprint performance is not linear, and timing method, start type, surface, and conditions all change real results. The result explanations show which inputs shaped the estimate."}},{"@type":"Question","name":"What is the difference between hand time and FAT?","acceptedAnswer":{"@type":"Answer","text":"Hand-timed runs are typically 0.20 to 0.30 seconds faster than fully automatic timing. The calculator can apply a +0.24-second adjustment to estimate a FAT equivalent for track-style hand times."}},{"@type":"Question","name":"Why does start type matter?","acceptedAnswer":{"@type":"Answer","text":"Block, 3-point, and standing starts all begin from rest. Rolling and flying starts skip the acceleration phase, so a flying 40 will look much faster than the same effort from a standing or 3-point start."}},{"@type":"Question","name":"Are the benchmarks an exact percentile?","acceptedAnswer":{"@type":"Answer","text":"No. Benchmarks are general performance ranges drawn from cited sources. They are useful as broad guidance but should not be treated as percentile rankings."}}]}
 </script>
 </head>
 <body>
@@ -89,13 +89,13 @@
 </section>
 
 <section class="container calculator-shell" id="calculator">
-  <div class="calc-layout">
+  <div class="calc-layout" style="grid-template-columns:minmax(0,1fr);max-width:980px;margin:0 auto;">
     <div>
       <p class="muted small" style="margin:0 0 var(--space-3) 0;">The report updates automatically once distance and time are entered. Estimates only, not official marks.</p>
       <div id="sc-errors" role="alert" aria-live="assertive"></div>
       <h2 class="visually-hidden">Calculator</h2>
       <form id="sc-form" class="card calc-card" novalidate aria-describedby="sc-form-help">
-        <p id="sc-form-help" class="muted small" style="margin-bottom: var(--space-4);">Required inputs are first. Optional fields improve the confidence rating and shape the projection.</p>
+        <p id="sc-form-help" class="muted small" style="margin-bottom: var(--space-4);">Required inputs are first. Optional fields make the projection more specific.</p>
 
         <section class="form-section" aria-labelledby="sec-input">
           <h3 id="sec-input">Sprint input</h3>
@@ -199,24 +199,6 @@
         </div>
       </form>
     </div>
-
-    <aside class="report-sidebar" aria-label="What this report gives you">
-      <p class="eyebrow">Live sprint report</p>
-      <h2>Built for fast decisions</h2>
-      <div class="side-meter" aria-label="Report summary">
-        <div><span>Best first input</span><strong>40yd or 100m</strong></div>
-        <div><span>Most useful add-on</span><strong>Top speed</strong></div>
-        <div><span>Best confidence</span><strong>Splits + FAT</strong></div>
-      </div>
-      <ul>
-        <li>See entered marks and estimated marks separately.</li>
-        <li>Use measured top speed to change max-velocity-heavy estimates.</li>
-        <li>Check average speed, top speed, acceleration, and speed endurance.</li>
-        <li>Copy a share link for coaches, teammates, or training notes.</li>
-      </ul>
-      <div class="divider"></div>
-      <p class="small">No login, no email capture, and no personal athlete database.</p>
-    </aside>
   </div>
 </section>
 
@@ -235,7 +217,7 @@
   <div class="howto-grid">
     <div class="howto-item"><h3><span class="howto-num" aria-hidden="true">1</span> Normalize</h3><p class="muted">Timing and start type create a working baseline. Your entered row still stays unchanged in the results.</p></div>
     <div class="howto-item"><h3><span class="howto-num" aria-hidden="true">2</span> Shape</h3><p class="muted">Splits and top speed adjust acceleration and max-velocity estimates instead of acting as decoration.</p></div>
-    <div class="howto-item"><h3><span class="howto-num" aria-hidden="true">3</span> Label</h3><p class="muted">The report separates entered data, estimates, confidence, and benchmark ranges so it is easier to trust or question.</p></div>
+    <div class="howto-item"><h3><span class="howto-num" aria-hidden="true">3</span> Label</h3><p class="muted">The report separates entered data, estimates, adjustments, and benchmark ranges so it is easier to trust or question.</p></div>
   </div>
 
   <div class="disclaimer-compact" style="margin-top: var(--space-5);">
@@ -270,9 +252,9 @@
     <p class="eyebrow">FAQ</p>
     <h2>Common sprint conversion questions</h2>
   </div>
-  <details><summary>How accurate is SprintConvert?</summary><p>It returns estimates, not official marks. Sprint performance is not linear, and timing method, start type, surface, and conditions all change real results. The confidence rating tells you how strong the estimate is for your inputs.</p></details>
+  <details><summary>How accurate is SprintConvert?</summary><p>It returns estimates, not official marks. Sprint performance is not linear, and timing method, start type, surface, and conditions all change real results. The explanation panel shows which inputs shaped the estimate.</p></details>
   <details><summary>What is the difference between hand time and FAT?</summary><p>Hand-timed runs are typically 0.20 to 0.30 seconds faster than FAT because of human reaction delay starting the watch. The calculator can apply a +0.24-second adjustment to estimate a FAT equivalent for track-style hand times. For short combine-style tests, timing systems vary, so the adjustment is only an estimate.</p></details>
-  <details><summary>Why does start type matter?</summary><p>Block, 3-point, and standing starts all begin from rest. Rolling and flying starts skip the acceleration phase, so a flying 40 will look much faster than the same effort from a standing or 3-point start. Mixing start types reduces confidence in cross-distance comparisons.</p></details>
+  <details><summary>Why does start type matter?</summary><p>Block, 3-point, and standing starts all begin from rest. Rolling and flying starts skip the acceleration phase, so a flying 40 will look much faster than the same effort from a standing or 3-point start. Mixing start types reduces reliability in cross-distance comparisons.</p></details>
   <details><summary>Are the benchmarks an exact percentile?</summary><p>No. Benchmarks are general performance ranges drawn from cited sources. They are useful as broad guidance but should not be treated as percentile rankings.</p></details>
   <details><summary>Will this help with recruiting?</summary><p>This site does not predict, guarantee, or determine recruiting outcomes. It can give you a quick directional estimate to share with a coach or training partner. Talk to a qualified coach for individualized advice.</p></details>
 </section>
@@ -311,11 +293,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js?v=20260902c" defer></script>
-<script src="js/calculator.js?v=20260902c" defer></script>
-<script src="js/validation.js?v=20260902c" defer></script>
-<script src="js/benchmarks.js?v=20260902c" defer></script>
-<script src="js/share.js?v=20260902c" defer></script>
+<script src="data/benchmarks.js?v=20260903a" defer></script>
+<script src="js/calculator.js?v=20260903a" defer></script>
+<script src="js/validation.js?v=20260903a" defer></script>
+<script src="js/benchmarks.js?v=20260903a" defer></script>
+<script src="js/share.js?v=20260903a" defer></script>
 <script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({
     defaults: { distance: "40y", timing: "fat", startType: "3point", topSpeedUnit: "mph", sport: "general athlete" },
     revealId: "sc-results-section",
