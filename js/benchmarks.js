@@ -62,20 +62,22 @@
     card.appendChild(el("p", { text: "The entered mark stays visible, while the estimates show how the same performance projects across common sprint tests." }));
 
     var grid = el("div", { class: "snapshot-grid" });
+    var shown = {};
+    var distanceCards = 0;
+
     grid.appendChild(snapshotItem(shortDistanceLabel(result.srcKey), formatTime(tableEstimates[result.srcKey]), "Entered", "entered"));
+    shown[result.srcKey] = true;
+    distanceCards += 1;
 
-    var primaryKey = result.srcKey === "100m" ? "40y" : "100m";
-    if (primaryKey !== result.srcKey) {
-      grid.appendChild(snapshotItem(shortDistanceLabel(primaryKey), formatTime(tableEstimates[primaryKey]), "Estimate"));
-    }
-
-    var secondaryKey = result.srcKey === "200m" ? "40y" : "200m";
-    if (secondaryKey !== result.srcKey && secondaryKey !== primaryKey) {
-      grid.appendChild(snapshotItem(shortDistanceLabel(secondaryKey), formatTime(tableEstimates[secondaryKey]), "Estimate"));
-    }
+    ["40y", "100m", "200m", "60m", "60y"].forEach(function (key) {
+      if (distanceCards >= 3 || shown[key]) return;
+      if (tableEstimates[key] === null || tableEstimates[key] === undefined) return;
+      grid.appendChild(snapshotItem(shortDistanceLabel(key), formatTime(tableEstimates[key]), "Estimate"));
+      shown[key] = true;
+      distanceCards += 1;
+    });
 
     grid.appendChild(snapshotItem("Top speed", result.speeds && result.speeds.topMph ? result.speeds.topMph + " mph" : "-", result.maxSpeedApplied ? "Measured input" : "Estimated"));
-    grid.appendChild(snapshotItem("Confidence", result.confidence && result.confidence.level ? result.confidence.level.toUpperCase() : "-", "Reliability"));
 
     card.appendChild(grid);
     return card;
@@ -106,7 +108,6 @@
       list.appendChild(renderDriverRow("Splits", "No split anchors were entered, so acceleration shape was inferred from the main mark."));
     }
 
-    list.appendChild(renderDriverRow("Confidence", result.confidence && result.confidence.explanation ? result.confidence.explanation : "Confidence reflects timing quality, start type, and how far the conversion stretches."));
     card.appendChild(list);
     return card;
   }
@@ -183,13 +184,6 @@
 
     frag.appendChild(renderSnapshotCard(input, result, tableEstimates));
 
-    var confCard = el("section", { class: "card confidence-card", "aria-label": "Confidence rating" });
-    confCard.appendChild(el("h3", { text: "Confidence rating" }));
-    var confLevel = (result.confidence.level || "low").toLowerCase();
-    confCard.appendChild(el("p", { class: "conf-level conf-" + confLevel }, [el("strong", { text: confLevel.toUpperCase() })]));
-    confCard.appendChild(el("p", { class: "muted", text: result.confidence.explanation }));
-    frag.appendChild(confCard);
-
     var splitsCard = el("section", { class: "card splits-card", "aria-label": "Estimated sprint conversions" });
     splitsCard.appendChild(el("h3", { text: "Estimated sprint conversions" }));
     var adjText = adjustmentText(input, result);
@@ -235,7 +229,6 @@
     grid.appendChild(metricBlock("Top speed", String(result.speeds.topMph) + " mph", topSpeedSub));
     grid.appendChild(metricBlock("Acceleration", result.subScores.acceleration.tier, "score " + result.subScores.acceleration.score));
     grid.appendChild(metricBlock("Max velocity", result.subScores.maxVelocity.tier, "score " + result.subScores.maxVelocity.score));
-    grid.appendChild(metricBlock("Speed endurance", result.subScores.speedEndurance.tier, "score " + result.subScores.speedEndurance.score));
     perfCard.appendChild(grid);
     frag.appendChild(perfCard);
 
