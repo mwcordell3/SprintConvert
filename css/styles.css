@@ -338,13 +338,27 @@ input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent);
 
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
+@media (min-width: 900px) {
+  h1 { font-size: 3rem; }
+  .hero { padding: 36px 0 64px; }
+  .hero h1 { margin-bottom: 14px; }
+  .hero p.lead { margin-bottom: 16px; }
+  .trust-row { margin-bottom: 16px; }
+  .quick-links { margin-top: 12px; }
+  .hero-panel { padding: 20px; }
+  .hero-panel-top { margin-bottom: 12px; }
+  .preview-row { padding: 8px 0; }
+  .calculator-shell { margin-top: -74px; }
+}
+
 @media (max-width: 719px) {
   body { background-size: 64px 100%; }
   .site-header-inner { align-items: flex-start; flex-direction: column; }
   .site-nav ul { gap: 12px; }
   .site-nav a[aria-current="page"]::after { bottom: -6px; }
-  .hero { padding: var(--space-6) 0 76px; }
+  .hero { padding: 32px 0 64px; }
   .hero-panel { padding: var(--space-4); }
+  .calculator-shell { margin-top: -42px; }
   .calc-card, #sc-form { padding: var(--space-4); }
   .form-section, fieldset { padding: var(--space-4); }
   details.form-section > summary { padding: var(--space-4); }
