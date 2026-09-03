@@ -6,7 +6,7 @@
 <title>SprintConvert | 40 Yard Dash, 100m & Sprint Speed Calculator</title>
 <meta name="description" content="Use SprintConvert to convert 40-yard dash, 100m, 60m, 200m, flying splits, top speed, and sprint speed in mph. Free calculator with clear estimates and benchmarks.">
 <link rel="canonical" href="https://mwcordell3.github.io/SprintConvert/">
-<link rel="stylesheet" href="css/styles.css?v=20260903a">
+<link rel="stylesheet" href="css/styles.css?v=20260903b">
 <meta name="theme-color" content="#f7f8f5">
 <meta property="og:type" content="website">
 <meta property="og:title" content="SprintConvert | 40 Yard Dash, 100m & Sprint Speed Calculator">
@@ -48,19 +48,19 @@
 <main id="main">
 
 <section class="hero hero-lab">
-  <div class="container hero-grid">
+  <div class="container hero-grid hero-grid-single">
     <div class="hero-copy">
       <p class="eyebrow">Sprint conversion calculator</p>
       <h1>SprintConvert</h1>
-      <p class="lead">Enter a 40-yard dash, 100m, 60m, flying split, or top speed and get a clear sprint estimate report. The calculator keeps your real input visible, labels estimates, and explains which inputs changed the result.</p>
+      <p class="lead">Convert a 40-yard dash, 100m, 60m, flying split, or measured top speed into a clean sprint report. Enter your mark first; estimates stay labeled.</p>
       <div class="trust-row" aria-label="Trust and privacy notes">
         <span>No account</span>
-        <span>Browser-only math</span>
-        <span>Entered rows stay entered</span>
+        <span>Entered marks stay visible</span>
+        <span>Top speed affects results</span>
       </div>
       <div class="cta-row">
-        <a class="btn btn-primary btn-large" href="#calculator">Open calculator</a>
-        <a class="btn btn-secondary" href="methodology.html">Check methodology</a>
+        <a class="btn btn-primary btn-large" href="#calculator">Start calculating</a>
+        <a class="btn btn-secondary" href="methodology.html">See the method</a>
       </div>
       <div class="quick-links" aria-label="Popular calculators">
         <a href="40-yard-dash-calculator.html">40yd calculator</a>
@@ -68,23 +68,6 @@
         <a href="sprint-speed-calculator.html">mph calculator</a>
       </div>
     </div>
-
-    <aside class="hero-panel" aria-label="Example sprint conversion">
-      <div class="hero-panel-top">
-        <div>
-          <p class="hero-panel-kicker">Example report</p>
-          <h2>5.02s 40-yard dash</h2>
-        </div>
-        <span class="status-pill">Live</span>
-      </div>
-      <div class="conversion-preview">
-        <div class="preview-row"><span class="preview-label">40 yards</span><strong class="preview-value">5.02s</strong></div>
-        <div class="preview-row"><span class="preview-label">10-yard split</span><strong class="preview-value">1.65s</strong></div>
-        <div class="preview-row"><span class="preview-label">Estimated 100m</span><strong class="preview-value estimate">11.95s</strong></div>
-        <div class="preview-row"><span class="preview-label">Top speed input</span><strong class="preview-value estimate">18.9 mph</strong></div>
-      </div>
-      <p class="small" style="margin-top:16px;margin-bottom:0;">Inputs stay visible. Projections update as timing, start type, splits, and top speed change.</p>
-    </aside>
   </div>
 </section>
 
@@ -293,11 +276,11 @@
   </div>
 </footer>
 
-<script src="data/benchmarks.js?v=20260903a" defer></script>
-<script src="js/calculator.js?v=20260903a" defer></script>
-<script src="js/validation.js?v=20260903a" defer></script>
-<script src="js/benchmarks.js?v=20260903a" defer></script>
-<script src="js/share.js?v=20260903a" defer></script>
+<script src="data/benchmarks.js?v=20260903b" defer></script>
+<script src="js/calculator.js?v=20260903b" defer></script>
+<script src="js/validation.js?v=20260903b" defer></script>
+<script src="js/benchmarks.js?v=20260903b" defer></script>
+<script src="js/share.js?v=20260903b" defer></script>
 <script>document.addEventListener("DOMContentLoaded",function(){window.SC.share.bootstrapCalculator({
     defaults: { distance: "40y", timing: "fat", startType: "3point", topSpeedUnit: "mph", sport: "general athlete" },
     revealId: "sc-results-section",
